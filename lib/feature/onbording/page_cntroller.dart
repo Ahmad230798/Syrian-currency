@@ -38,10 +38,9 @@ class _PageCntrollerState extends State<PageCntroller> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColore.backGroundColor,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -61,12 +60,12 @@ class _PageCntrollerState extends State<PageCntroller> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(3, (index) {
                   return AnimatedContainer(
-                    margin: EdgeInsets.symmetric(horizontal: 4),
-                    height: 6,
+                    margin: EdgeInsets.symmetric(horizontal: 4.w),
+                    height: 6.h,
                     duration: Duration(microseconds: 300),
                     width: currentIndex == index ? 32 : 6,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10.r),
                       color: currentIndex == index
                           ? AppColore.blue
                           : AppColore.gray,

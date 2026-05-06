@@ -24,6 +24,14 @@ class AppTextStyle {
     height: 16 / 12,
     letterSpacing: 0.6,
   );
+  static const font24bold = TextStyle(
+    fontFamily: 'Manrope',
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+    color: Colors.white,
+    height: 32 / 24,
+    letterSpacing: 0,
+  );
   static const font30extraBold = TextStyle(
     fontFamily: 'Manrope',
     fontSize: 30,

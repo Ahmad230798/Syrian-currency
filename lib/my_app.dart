@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:syrian_currency/feature/onbording/page_cntroller.dart';
+import 'package:syrian_currency/core/constants/app_colore.dart';
+import 'package:syrian_currency/core/routing/app_route.dart';
+import 'package:syrian_currency/core/routing/routes.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final AppRoute appRoute;
+  const MyApp({super.key, required this.appRoute});
 
   // This widget is the root of your application.
   @override
@@ -13,12 +16,10 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: MaterialApp(
-        title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
-        home: PageCntroller(),
+        theme: ThemeData(scaffoldBackgroundColor: AppColore.backGroundColor),
+        initialRoute: Routes.logIn,
+        onGenerateRoute: appRoute.generateRoute,
       ),
     );
   }
