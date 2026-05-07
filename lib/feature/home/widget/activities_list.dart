@@ -34,7 +34,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
         ),
         SizedBox(height: 16.h),
         ListView.builder(
-          itemCount: more ? 3 : 10,
+          itemCount: more ? 10 : 3,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
