@@ -40,7 +40,7 @@ class LoginScreen extends StatelessWidget {
                       child: Container(
                         width: 1.sw,
 
-                        color: AppColore.blureColor.withOpacity(0.4),
+                        color: AppColor.blureColor.withOpacity(0.4),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: 32.w,
@@ -76,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                           "Create an account",
                           style: AppTextStyle.font16medium.copyWith(
                             fontWeight: FontWeight.w400,
-                            color: AppColore.blue,
+                            color: AppColor.blue,
                           ),
                         ),
                       ),

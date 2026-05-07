@@ -13,15 +13,15 @@ class OnBoardingHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.shield_outlined, size: 40, color: AppColore.blue),
+          Icon(Icons.shield_outlined, size: 40, color: AppColor.blue),
           // SizedBox(width: 80.w),
           Text("SYP Shield AI", style: AppTextStyle.font18bold),
           Text(
             "skip",
             style: AppTextStyle.font12semibold.copyWith(
-              color: AppColore.grayText,
+              color: AppColor.grayText,
               fontSize: 16,
-              height: 24/16
+              height: 24 / 16,
             ),
           ),
         ],

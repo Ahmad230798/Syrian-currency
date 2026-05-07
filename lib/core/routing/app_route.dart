@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/feature/auth/pages/login_screen.dart';
+import 'package:syrian_currency/feature/auth/pages/signup_screen.dart';
+import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
 import 'package:syrian_currency/feature/onbording/page_cntroller.dart';
 
 class AppRoute {
@@ -10,6 +12,10 @@ class AppRoute {
         return MaterialPageRoute(builder: (_) => PageCntroller());
       case Routes.logIn:
         return MaterialPageRoute(builder: (_) => LoginScreen());
+      case Routes.signUp:
+        return MaterialPageRoute(builder: (_) => SignupScreen());
+      case Routes.home:
+        return MaterialPageRoute(builder: (_) => HomeScreeen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

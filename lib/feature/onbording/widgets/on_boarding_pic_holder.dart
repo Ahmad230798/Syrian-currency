@@ -94,7 +94,7 @@ class OnboardingPicHolder extends StatelessWidget {
                           Icon(
                             Icons.remove_red_eye_outlined,
                             size: 14,
-                            color: AppColore.blue,
+                            color: AppColor.blue,
                           ),
                           SizedBox(width: 6),
                           Text(

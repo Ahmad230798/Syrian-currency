@@ -44,7 +44,7 @@ class OnBoarding2 extends StatelessWidget {
         Text("Fast.Accurate.", style: AppTextStyle.font30extraBold),
         Text(
           "Secure.",
-          style: AppTextStyle.font30extraBold.copyWith(color: AppColore.blue),
+          style: AppTextStyle.font30extraBold.copyWith(color: AppColor.blue),
         ),
         SizedBox(height: 16.h),
         Text(

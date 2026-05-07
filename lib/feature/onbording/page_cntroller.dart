@@ -67,8 +67,8 @@ class _PageCntrollerState extends State<PageCntroller> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       color: currentIndex == index
-                          ? AppColore.blue
-                          : AppColore.gray,
+                          ? AppColor.blue
+                          : AppColor.gray,
                     ),
                   );
                 }),

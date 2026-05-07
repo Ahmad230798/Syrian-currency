@@ -28,7 +28,7 @@ class OnBoarding3 extends StatelessWidget {
         Text("Protect Your", style: AppTextStyle.font30extraBold),
         Text(
           "Transactions",
-          style: AppTextStyle.font30extraBold.copyWith(color: AppColore.blue),
+          style: AppTextStyle.font30extraBold.copyWith(color: AppColor.blue),
         ),
         SizedBox(height: 16.h),
         Text(
