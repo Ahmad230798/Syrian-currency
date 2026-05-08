@@ -25,54 +25,56 @@ class HomeScreeen extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(height: 24.h),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 24.w,
-                          vertical: 24.h,
-                        ),
-                        width: 1.sw,
+                      ClipRRect(
+                        borderRadius: BorderRadiusGeometry.circular(32.r),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 22.w,
+                              vertical: 24.h,
+                            ),
+                            width: 1.sw,
 
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/mainGradiant.png"),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(32.r),
+                              color: Color.fromRGBO(30, 50, 90, 120),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "PROTECTION ACTIVATE",
+                                  style: AppTextStyle.font12semibold.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColor.blue,
+                                    letterSpacing: 1.2,
+                                  ),
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  "Secure your digital\npresence",
+                                  style: AppTextStyle.font24bold,
+                                ),
+                                SizedBox(height: 6.h),
+                                Text(
+                                  "Our advanced AI engine detects deepfakes and\npotential content manipulation in seconds.",
+                                  style: AppTextStyle.font14regular,
+                                ),
+                                SizedBox(height: 24.h),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(24.r),
+                                  ),
+                                  child: Image.asset(
+                                    "assets/images/home_image.png",
+                                  ),
+                                ),
+                                SizedBox(height: 24.h),
+                                AppBottom(text: "Start System Scan"),
+                              ],
+                            ),
                           ),
-                          borderRadius: BorderRadius.circular(32.r),
-                          color: Colors.blue.withOpacity(0.3),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "PROTECTION ACTIVATE",
-                              style: AppTextStyle.font12semibold.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: AppColor.blue,
-                                letterSpacing: 1.2,
-                              ),
-                            ),
-                            SizedBox(height: 8.h),
-                            Text(
-                              "Secure your digital\npresence",
-                              style: AppTextStyle.font24bold,
-                            ),
-                            SizedBox(height: 6.h),
-                            Text(
-                              "Our advanced AI engine detects deepfakes and\npotential content manipulation in seconds.",
-                              style: AppTextStyle.font14regular,
-                            ),
-                            SizedBox(height: 24.h),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24.r),
-                                color: Color.fromRGBO(29, 49, 89, 122),
-                              ),
-                              child: Image.asset(
-                                "assets/images/home_image.png",
-                              ),
-                            ),
-                            SizedBox(height: 24.h),
-                            AppBottom(text: "Start System Scan"),
-                          ],
                         ),
                       ),
                       SizedBox(height: 22.h),
@@ -86,7 +88,7 @@ class HomeScreeen extends StatelessWidget {
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                horizontal: 20.w,
+                                horizontal: 15.w,
                                 vertical: 20.h,
                               ),
                               child: Column(
@@ -108,7 +110,7 @@ class HomeScreeen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            SizedBox(width: 30.w),
+                            Spacer(),
                             AppBottom(
                               text: "Upload",
                               boxShadow: [],
@@ -119,6 +121,7 @@ class HomeScreeen extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
+                            SizedBox(width: 20.w),
                           ],
                         ),
                       ),
