@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:syrian_currency/core/constants/app_colore.dart';
+import 'package:syrian_currency/core/constants/app_color.dart';
 
 class AppTextStyle {
   static const font12semibold = TextStyle(

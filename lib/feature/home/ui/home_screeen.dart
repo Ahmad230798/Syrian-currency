@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:syrian_currency/core/constants/app_colore.dart';
+import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 import 'package:syrian_currency/core/widgets/app_bottom.dart';
 import 'package:syrian_currency/core/widgets/my_app_bar.dart';
@@ -82,7 +82,7 @@ class HomeScreeen extends StatelessWidget {
                         width: 1.sw,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(32.r),
-                          color: Color.fromRGBO(23, 30, 41, 68),
+                          color:AppColor.mainContainerBackGround
                         ),
                         child: Row(
                           children: [
