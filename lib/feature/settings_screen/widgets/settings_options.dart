@@ -4,10 +4,19 @@ import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 import 'package:syrian_currency/core/widgets/app_bottom.dart';
 import 'package:syrian_currency/core/widgets/options_card.dart';
+import 'package:flutter/cupertino.dart';
 
-class SettingsOptions extends StatelessWidget {
+class SettingsOptions extends StatefulWidget {
   const SettingsOptions({super.key});
 
+  @override
+  State<SettingsOptions> createState() => _SettingsOptionsState();
+}
+
+class _SettingsOptionsState extends State<SettingsOptions> {
+  bool pushNotificationSwitched = false;
+  bool biometricSwitched = false;
+  bool darkModewitched = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -50,6 +59,15 @@ class SettingsOptions extends StatelessWidget {
                       ),
                     ),
                     text: "Push Notifications",
+                    icon: CupertinoSwitch(
+                      value: pushNotificationSwitched,
+                      activeTrackColor: AppColor.blue,
+                      onChanged: (bool newValue) {
+                        setState(() {
+                          pushNotificationSwitched = newValue;
+                        });
+                      },
+                    ),
                   ),
                   Divider(color: AppColor.grayText, thickness: 0.5),
                   OptionsCard(
@@ -63,6 +81,15 @@ class SettingsOptions extends StatelessWidget {
                       child: Icon(Icons.fingerprint, color: AppColor.blue),
                     ),
                     text: "Biometric Unlock",
+                    icon: CupertinoSwitch(
+                      value: biometricSwitched,
+                      activeTrackColor: AppColor.blue,
+                      onChanged: (bool newValue) {
+                        setState(() {
+                          biometricSwitched = newValue;
+                        });
+                      },
+                    ),
                   ),
                   Divider(color: AppColor.grayText, thickness: 0.5),
                   OptionsCard(
@@ -79,6 +106,15 @@ class SettingsOptions extends StatelessWidget {
                       ),
                     ),
                     text: "Dark Mode",
+                    icon: CupertinoSwitch(
+                      value: darkModewitched,
+                      activeTrackColor: AppColor.blue,
+                      onChanged: (bool newValue) {
+                        setState(() {
+                          darkModewitched = newValue;
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -208,7 +244,6 @@ class SettingsOptions extends StatelessWidget {
               ),
             ),
           ),
-          
         ],
       ),
     );

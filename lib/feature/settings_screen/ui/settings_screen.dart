@@ -45,9 +45,9 @@ class SettingsScreen extends StatelessWidget {
                         child: AppBottom(
                           text: "Log Out",
                           boxShadow: [],
-                          textcolor: AppColor.red,
-                          color: AppColor.red,
-                          backGroundColor: AppColor.red.withOpacity(0.1),
+                          textcolor: AppColor.lightRed,
+                          color: AppColor.lightRed,
+                          backGroundColor: AppColor.lightRed.withOpacity(0.09),
                           icon: Icons.logout,
                         ),
                       ),
