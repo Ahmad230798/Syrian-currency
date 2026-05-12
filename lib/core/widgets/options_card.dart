@@ -6,7 +6,7 @@ import 'package:syrian_currency/core/constants/app_text_style.dart';
 class OptionsCard extends StatelessWidget {
   final Widget widget;
   final String text;
-  final IconData? icon;
+  final Widget? icon;
   const OptionsCard({
     super.key,
     required this.widget,
@@ -35,11 +35,8 @@ class OptionsCard extends StatelessWidget {
             ),
           ),
           Spacer(),
-          Icon(
-            icon ?? Icons.arrow_forward_ios,
-            color: AppColor.grayText,
-            size: 15,
-          ),
+          icon ??
+              Icon(Icons.arrow_forward_ios, color: AppColor.grayText, size: 15),
         ],
       ),
     );
