@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/feature/auth/pages/login_screen.dart';
 import 'package:syrian_currency/feature/auth/pages/signup_screen.dart';
+import 'package:syrian_currency/feature/edite_profile/ui/edit_profile_screen.dart';
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
 import 'package:syrian_currency/feature/onbording/page_cntroller.dart';
 import 'package:syrian_currency/feature/profile/ui/profile_screen.dart';
@@ -22,6 +23,8 @@ class AppRoute {
         return MaterialPageRoute(builder: (_) => ScanResultScreen());
       case Routes.profile:
         return MaterialPageRoute(builder: (_) => ProfileScreen());
+      case Routes.editProfile:
+        return MaterialPageRoute(builder: (_) => EditProfileScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

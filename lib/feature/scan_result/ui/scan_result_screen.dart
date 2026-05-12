@@ -63,10 +63,7 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
           opacity: _isFabVisible ? 1.0 : 0.0,
           child: Padding(
             padding: EdgeInsets.only(left: 24.w),
-            child: Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: AppBottom(text: "Scan Again", icon: Icons.camera_outlined),
-            ),
+            child: AppBottom(text: "Scan Again", icon: Icons.camera_outlined),
           ),
         ),
       ),

@@ -14,7 +14,7 @@ class OnBoarding1 extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        OnBoardingHeader(),
+     const   OnBoardingHeader(),
         OnboardingPicHolder(
           imagePath: 'assets/images/onboarding_1image.png',
           isActive: false,
