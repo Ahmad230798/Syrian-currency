@@ -14,7 +14,7 @@ class OnBoarding3 extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        OnBoardingHeader(),
+        const OnBoardingHeader(),
         SizedBox(height: 33.h),
         OnboardingPicHolder(
           color1: Color(0xFF3C83F6).withOpacity(0.02),

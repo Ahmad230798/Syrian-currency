@@ -18,7 +18,10 @@ class HomeScreeen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            MyAppBar(title: 'Home', suffixsIcon: SvgPicture.asset("assets/svgs/app_bar_logo.svg"),),
+            MyAppBar(
+              title: 'Home',
+              suffixsIcon: SvgPicture.asset("assets/svgs/app_bar_logo.svg"),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
@@ -72,7 +75,7 @@ class HomeScreeen extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 24.h),
-                                AppBottom(text: "Start System Scan"),
+                                const AppBottom(text: "Start System Scan"),
                               ],
                             ),
                           ),
@@ -83,7 +86,7 @@ class HomeScreeen extends StatelessWidget {
                         width: 1.sw,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(32.r),
-                          color:AppColor.mainContainerBackGround
+                          color: AppColor.mainContainerBackGround,
                         ),
                         child: Row(
                           children: [
@@ -127,7 +130,7 @@ class HomeScreeen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      ActivitiesList(),
+                      const ActivitiesList(),
                     ],
                   ),
                 ),
