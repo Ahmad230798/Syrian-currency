@@ -2,12 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 
 class MyAppBar extends StatelessWidget {
-  const MyAppBar({super.key});
+  final String title;
+  final Widget? suffixsIcon;
+  final IconData? icon;
+  const MyAppBar({super.key, required this.title, this.suffixsIcon, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +17,15 @@ class MyAppBar extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
         child: Container(
+          width: double.infinity,
           decoration: BoxDecoration(
-            color: Color.fromRGBO(23, 30, 41, 68),
+            color: Color.fromRGBO(23, 30, 41, 0.68),
 
             border: Border.all(
-              width: 0.05,
-              color: Colors.grey.withOpacity(0.8),
+              style: BorderStyle.solid,
+              width: 1,
+              strokeAlign: BorderSide.strokeAlignInside,
+              color: Colors.white.withOpacity(0.08),
             ),
           ),
           child: Padding(
@@ -28,9 +33,10 @@ class MyAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SvgPicture.asset("assets/svgs/app_bar_logo.svg"),
+                suffixsIcon ??
+                    Icon(Icons.arrow_back, color: Colors.white, size: 30),
 
-                Text("Home", style: AppTextStyle.font20extrabold),
+                Text(title, style: AppTextStyle.font20extrabold),
 
                 Container(
                   width: 40.w,
@@ -39,7 +45,7 @@ class MyAppBar extends StatelessWidget {
                     color: AppColor.blureColor.withOpacity(0.8),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.notifications, color: Colors.white),
+                  child: Icon(icon ?? Icons.notifications, color: Colors.white),
                 ),
               ],
             ),

@@ -10,6 +10,8 @@ class AppBottom extends StatelessWidget {
   final TextStyle? textStyle;
   final List<BoxShadow>? boxShadow;
   final void Function()? onPressed;
+  final IconData? icon;
+  final Color? textcolor;
   const AppBottom({
     super.key,
     required this.text,
@@ -18,6 +20,8 @@ class AppBottom extends StatelessWidget {
     this.textStyle,
     this.backGroundColor,
     this.boxShadow,
+    this.icon,
+    this.textcolor,
   });
 
   @override
@@ -47,9 +51,9 @@ class AppBottom extends StatelessWidget {
           elevation: 0,
           backgroundColor: backGroundColor ?? AppColor.blue,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(32),
+            borderRadius: BorderRadius.circular(32.r),
           ),
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
         ),
         onPressed: onPressed ?? () {},
         child: Row(
@@ -57,11 +61,19 @@ class AppBottom extends StatelessWidget {
           children: [
             Text(
               text,
-              style: textStyle ?? AppTextStyle.font18bold,
+              style:
+                  textStyle ??
+                  AppTextStyle.font18bold.copyWith(
+                    color: color ?? Colors.white,
+                  ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(width: 8),
-            Icon(Icons.arrow_forward, size: 25, color: color ?? Colors.white),
+            SizedBox(width: 8.w),
+            Icon(
+              icon ?? Icons.arrow_forward,
+              size: 25,
+              color: color ?? Colors.white,
+            ),
           ],
         ),
       ),

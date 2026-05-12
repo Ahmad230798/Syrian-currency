@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 
 class AppTextStyle {
+  static const font10bold = TextStyle(
+    fontFamily: 'Manrope',
+    fontSize: 10,
+    fontWeight: FontWeight.w700,
+    color: Colors.white,
+    height: 15 / 10,
+    letterSpacing: 1,
+  );
   static const font12semibold = TextStyle(
     fontFamily: 'Manrope',
     fontSize: 12,

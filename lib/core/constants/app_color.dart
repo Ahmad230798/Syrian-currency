@@ -8,4 +8,6 @@ class AppColor {
   static const Color blureColor = Color(0xff1E293B);
   static const mainContainerBackGround = Color.fromRGBO(23, 30, 41, 68);
   static const backGroundColor = Color(0xff101722);
+  static const green = Color(0xff22C55E);
+  static const red = Color(0xffEF4444);
 }
