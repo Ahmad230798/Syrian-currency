@@ -13,7 +13,7 @@ class OnBoarding2 extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        OnBoardingHeader(),
+      const  OnBoardingHeader(),
         SizedBox(height: 33.h),
         Container(
           height: 340.h,

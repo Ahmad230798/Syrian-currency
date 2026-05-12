@@ -64,7 +64,7 @@ class AppBottom extends StatelessWidget {
               style:
                   textStyle ??
                   AppTextStyle.font18bold.copyWith(
-                    color: color ?? Colors.white,
+                    color: textcolor ?? Colors.white,
                   ),
               textAlign: TextAlign.center,
             ),

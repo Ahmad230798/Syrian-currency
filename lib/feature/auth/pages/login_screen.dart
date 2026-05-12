@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                                 style: AppTextStyle.font24bold,
                               ),
                               SizedBox(height: 32),
-                              LogInForm(),
+                              const LogInForm(),
                             ],
                           ),
                         ),

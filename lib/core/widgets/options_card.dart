@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 
-class SecurityAndAccountCard extends StatelessWidget {
+class OptionsCard extends StatelessWidget {
   final Widget widget;
   final String text;
-  const SecurityAndAccountCard({
+  final IconData? icon;
+  const OptionsCard({
     super.key,
     required this.widget,
     required this.text,
+    this.icon,
   });
 
   @override
@@ -34,7 +35,11 @@ class SecurityAndAccountCard extends StatelessWidget {
             ),
           ),
           Spacer(),
-          Icon(Icons.arrow_forward_ios, color: AppColor.grayText, size: 15),
+          Icon(
+            icon ?? Icons.arrow_forward_ios,
+            color: AppColor.grayText,
+            size: 15,
+          ),
         ],
       ),
     );
