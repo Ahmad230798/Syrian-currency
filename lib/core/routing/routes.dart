@@ -7,4 +7,5 @@ class Routes {
   static const String profile = '/profile';
   static const String editProfile = '/editProfile';
   static const String settingScreen = '/settingScreen';
+  static const String scanHistoryScreen = '/scanHistoryScreen';
 }

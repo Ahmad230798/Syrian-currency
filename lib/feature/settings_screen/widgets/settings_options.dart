@@ -38,7 +38,10 @@ class _SettingsOptionsState extends State<SettingsOptions> {
             child: Container(
               width: 1.sw,
               decoration: BoxDecoration(
-                border: Border.all(color: AppColor.grayText, width: 0.5.w),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.08),
+                  width: 1.w,
+                ),
                 borderRadius: BorderRadius.circular(16.r),
                 color: AppColor.mainContainerBackGround,
               ),
@@ -68,7 +71,7 @@ class _SettingsOptionsState extends State<SettingsOptions> {
                       },
                     ),
                   ),
-                  Divider(color: AppColor.grayText, thickness: 0.5),
+                  Divider(color: Colors.white.withOpacity(0.08), thickness: 1),
                   OptionsCard(
                     widget: Container(
                       width: 40.w,
@@ -90,7 +93,7 @@ class _SettingsOptionsState extends State<SettingsOptions> {
                       },
                     ),
                   ),
-                  Divider(color: AppColor.grayText, thickness: 0.5),
+                  Divider(color: Colors.white.withOpacity(0.08), thickness: 1),
                   OptionsCard(
                     widget: Container(
                       width: 40.w,
@@ -135,7 +138,10 @@ class _SettingsOptionsState extends State<SettingsOptions> {
             child: Container(
               width: 1.sw,
               decoration: BoxDecoration(
-                border: Border.all(color: AppColor.grayText, width: 0.5.w),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.08),
+                  width: 1.w,
+                ),
                 borderRadius: BorderRadius.circular(16.r),
                 color: AppColor.mainContainerBackGround,
               ),
@@ -156,7 +162,10 @@ class _SettingsOptionsState extends State<SettingsOptions> {
                     ),
                     text: "Change Password",
                   ),
-                  Divider(color: AppColor.grayText, thickness: 0.5),
+                  Divider(
+                    color: Colors.white.withOpacity(0.08),
+                    thickness: 1.w,
+                  ),
                   OptionsCard(
                     widget: Container(
                       width: 40.w,
@@ -189,7 +198,10 @@ class _SettingsOptionsState extends State<SettingsOptions> {
             child: Container(
               width: 1.sw,
               decoration: BoxDecoration(
-                border: Border.all(color: AppColor.grayText, width: 0.5.w),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.08),
+                  width: 1.w,
+                ),
                 borderRadius: BorderRadius.circular(16.r),
                 color: AppColor.mainContainerBackGround,
               ),
@@ -210,7 +222,10 @@ class _SettingsOptionsState extends State<SettingsOptions> {
                     ),
                     text: "Help Center",
                   ),
-                  Divider(color: AppColor.grayText, thickness: 0.5),
+                  Divider(
+                    color: Colors.white.withOpacity(0.08),
+                    thickness: 1.w,
+                  ),
                   OptionsCard(
                     widget: Container(
                       width: 40.w,
@@ -226,7 +241,10 @@ class _SettingsOptionsState extends State<SettingsOptions> {
                     ),
                     text: "Report a Bug",
                   ),
-                  Divider(color: AppColor.grayText, thickness: 0.5),
+                  Divider(
+                    color: Colors.white.withOpacity(0.08),
+                    thickness: 1.w,
+                  ),
                   OptionsCard(
                     widget: Container(
                       width: 40.w,
