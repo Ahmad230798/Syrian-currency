@@ -13,33 +13,22 @@ class BodySection extends StatefulWidget {
 class _BodySectionState extends State<BodySection> {
   int _selectedIndex = 0;
   final List<String> _options = ["All", "Genuine", "Counterfeit"];
+  Widget _buildList(int type) {
+    // هنا نحدد البيانات بناءً على النوع
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 5, // مثال
+      itemBuilder: (context, index) {
+        if (type == 1) return const ScanCard(color: AppColor.green);
+        if (type == 2) {
+          return const ScanCard(result: "Counterfeit", color: AppColor.red);
+        }
+        return const ScanCard(); // لـ All
+      },
+    );
+  }
 
-  final List<Widget> _views = [
-    ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: 2,
-      itemBuilder: (context, index) {
-        return ScanCard();
-      },
-    ),
-    ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: 2,
-      itemBuilder: (context, index) {
-        return ScanCard(color: AppColor.green);
-      },
-    ),
-    ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: 2,
-      itemBuilder: (context, index) {
-        return ScanCard(result: "Counterfeit", color: AppColor.red);
-      },
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -104,7 +93,7 @@ class _BodySectionState extends State<BodySection> {
           ),
         ),
         32.verticalSpace,
-        _views[_selectedIndex],
+        _buildList(_selectedIndex),
       ],
     );
   }
