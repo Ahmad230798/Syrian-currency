@@ -6,4 +6,5 @@ class Routes {
   static const String scanResult = '/scanResult';
   static const String profile = '/profile';
   static const String editProfile = '/editProfile';
+  static const String settingScreen = '/settingScreen';
 }

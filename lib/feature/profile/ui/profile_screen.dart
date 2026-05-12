@@ -123,6 +123,7 @@ class ProfileScreen extends StatelessWidget {
                                 text: "Log Out",
                                 boxShadow: [],
                                 color: AppColor.red,
+                                textcolor: AppColor.red,
                                 backGroundColor: AppColor.red.withOpacity(0.1),
                                 icon: Icons.logout,
                               ),
