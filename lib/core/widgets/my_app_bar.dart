@@ -9,7 +9,14 @@ class MyAppBar extends StatelessWidget {
   final String title;
   final Widget? suffixsIcon;
   final IconData? icon;
-  const MyAppBar({super.key, required this.title, this.suffixsIcon, this.icon});
+  final bool showRightIcon;
+  const MyAppBar({
+    super.key,
+    required this.title,
+    this.suffixsIcon,
+    this.icon,
+    this.showRightIcon = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +45,20 @@ class MyAppBar extends StatelessWidget {
 
                 Text(title, style: AppTextStyle.font20extrabold),
 
-                Container(
-                  width: 40.w,
-                  height: 40.h,
-                  decoration: BoxDecoration(
-                    color: AppColor.blureColor.withOpacity(0.8),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(icon ?? Icons.notifications, color: Colors.white),
-                ),
+                showRightIcon
+                    ? Container(
+                        width: 40.w,
+                        height: 40.h,
+                        decoration: BoxDecoration(
+                          color: AppColor.blureColor.withOpacity(0.8),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          icon ?? Icons.notifications,
+                          color: Colors.white,
+                        ),
+                      )
+                    : SizedBox(width: 40.w),
               ],
             ),
           ),

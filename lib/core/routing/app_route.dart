@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
+import 'package:syrian_currency/feature/AI%20Explanation/ui/ai_explanation_screen.dart';
 import 'package:syrian_currency/feature/auth/pages/login_screen.dart';
 import 'package:syrian_currency/feature/auth/pages/signup_screen.dart';
 import 'package:syrian_currency/feature/edite_profile/ui/edit_profile_screen.dart';
@@ -25,6 +26,8 @@ class AppRoute {
         return MaterialPageRoute(builder: (_) => ProfileScreen());
       case Routes.editProfile:
         return MaterialPageRoute(builder: (_) => EditProfileScreen());
+      case Routes.aiExplanation:
+        return MaterialPageRoute(builder: (_) => AIExplanationScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
