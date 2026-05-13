@@ -5,13 +5,14 @@ import 'package:syrian_currency/core/constants/app_text_style.dart';
 
 class OptionsCard extends StatelessWidget {
   final Widget widget;
-  final String text;
+  final String? text;
   final Widget? icon;
+  final Widget? mainWidget;
   const OptionsCard({
     super.key,
     required this.widget,
-    required this.text,
-    this.icon,
+     this.text,
+    this.icon, this.mainWidget,
   });
 
   @override
@@ -27,8 +28,8 @@ class OptionsCard extends StatelessWidget {
         children: [
           widget,
           12.horizontalSpace,
-          Text(
-            text,
+          mainWidget??Text(
+            text!,
             style: AppTextStyle.font16medium.copyWith(
               fontWeight: FontWeight.w600,
               color: Colors.white,

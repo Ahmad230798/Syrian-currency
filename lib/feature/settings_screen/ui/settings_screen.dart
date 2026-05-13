@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/core/helper/navigation.dart';
 import 'package:syrian_currency/core/widgets/app_bottom.dart';
 import 'package:syrian_currency/core/widgets/my_app_bar.dart';
 import 'package:syrian_currency/core/widgets/profile_image_holder.dart';
@@ -17,7 +18,13 @@ class SettingsScreen extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              MyAppBar(title: "Settings"),
+              MyAppBar(
+                title: "Settings",
+                icon: Icons.settings,
+                onBackTap: () {
+                  context.pop();
+                },
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(

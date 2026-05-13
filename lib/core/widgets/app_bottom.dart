@@ -10,6 +10,7 @@ class AppBottom extends StatelessWidget {
   final TextStyle? textStyle;
   final List<BoxShadow>? boxShadow;
   final void Function()? onPressed;
+  final bool? isLoading;
   final IconData? icon;
   final Color? textcolor;
   const AppBottom({
@@ -22,6 +23,7 @@ class AppBottom extends StatelessWidget {
     this.boxShadow,
     this.icon,
     this.textcolor,
+    this.isLoading,
   });
 
   @override
@@ -56,26 +58,28 @@ class AppBottom extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
         ),
         onPressed: onPressed ?? () {},
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              text,
-              style:
-                  textStyle ??
-                  AppTextStyle.font18bold.copyWith(
-                    color: textcolor ?? Colors.white,
+        child: isLoading ?? false
+            ? SizedBox(child: Center(child: CircularProgressIndicator()))
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    text,
+                    style:
+                        textStyle ??
+                        AppTextStyle.font18bold.copyWith(
+                          color: textcolor ?? Colors.white,
+                        ),
+                    textAlign: TextAlign.center,
                   ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(width: 8.w),
-            Icon(
-              icon ?? Icons.arrow_forward,
-              size: 25,
-              color: color ?? Colors.white,
-            ),
-          ],
-        ),
+                  SizedBox(width: 8.w),
+                  Icon(
+                    icon ?? Icons.arrow_forward,
+                    size: 25,
+                    color: color ?? Colors.white,
+                  ),
+                ],
+              ),
       ),
     );
   }

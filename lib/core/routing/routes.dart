@@ -8,4 +8,5 @@ class Routes {
   static const String editProfile = '/editProfile';
   static const String aiExplanation = '/aiExplanation';
   static const String settingScreen = '/settingScreen';
+  static const String scanHistoryScreen = '/scanHistoryScreen';
 }

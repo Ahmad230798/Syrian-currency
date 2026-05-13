@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/widgets/app_bottom.dart';
 import 'package:syrian_currency/feature/onbording/pages/on_boarding1.dart';
 import 'package:syrian_currency/feature/onbording/pages/on_boarding2.dart';
@@ -31,7 +33,7 @@ class _PageCntrollerState extends State<PageCntroller> {
         curve: Curves.easeInOut,
       );
     } else {
-      // navigate to home page
+      context.pushReplacementNamed(Routes.logIn);
     }
   }
 
@@ -74,11 +76,16 @@ class _PageCntrollerState extends State<PageCntroller> {
                 }),
               ),
               SizedBox(height: 15.h),
-              AppBottom(text: 'Next Step'),
+              AppBottom(
+                text: 'Next Step',
+                onPressed: () {
+                  nextPage();
+                },
+              ),
               SizedBox(height: 24),
               InkWell(
                 onTap: () {
-                  //
+                  context.pushNamedAndRemoveUntil(Routes.logIn);
                 },
                 child: SizedBox(
                   width: 1.sw,

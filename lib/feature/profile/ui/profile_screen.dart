@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/widgets/app_bottom.dart';
 import 'package:syrian_currency/core/widgets/my_app_bar.dart';
 import 'package:syrian_currency/core/widgets/profile_image_holder.dart';
@@ -18,7 +20,16 @@ class ProfileScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const MyAppBar(title: "Profile", icon: Icons.settings),
+            MyAppBar(
+              title: "Profile",
+              icon: Icons.settings,
+              onBackTap: () {
+                context.pop();
+              },
+              onTap: () {
+                context.pushNamed(Routes.settingScreen);
+              },
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Center(

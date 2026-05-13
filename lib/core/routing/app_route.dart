@@ -7,6 +7,7 @@ import 'package:syrian_currency/feature/edite_profile/ui/edit_profile_screen.dar
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
 import 'package:syrian_currency/feature/onbording/page_cntroller.dart';
 import 'package:syrian_currency/feature/profile/ui/profile_screen.dart';
+import 'package:syrian_currency/feature/scan_history/ui/scan_history_screen.dart';
 import 'package:syrian_currency/feature/scan_result/ui/scan_result_screen.dart';
 import 'package:syrian_currency/feature/settings_screen/ui/settings_screen.dart';
 
@@ -31,6 +32,8 @@ class AppRoute {
         return MaterialPageRoute(builder: (_) => AIExplanationScreen());
       case Routes.settingScreen:
         return MaterialPageRoute(builder: (_) => SettingsScreen());
+      case Routes.scanHistoryScreen:
+        return MaterialPageRoute(builder: (_) => ScanHistoryScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
