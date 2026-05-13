@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import
+
 import 'dart:ui';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +8,7 @@ import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 
 class AiConfidence extends StatelessWidget {
-  const AiConfidence({
-    super.key,
-  });
+  const AiConfidence({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class AiConfidence extends StatelessWidget {
         color: AppColor.mainContainerBackGround,
         borderRadius: BorderRadius.circular(48.r),
       ),
-    
+
       child: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 24.h),
@@ -42,14 +42,9 @@ class AiConfidence extends StatelessWidget {
                   child: Container(
                     width: 84.w,
                     height: 84.h,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
+                    decoration: BoxDecoration(shape: BoxShape.circle),
                     child: Center(
-                      child: Text(
-                        "98%",
-                        style: AppTextStyle.font24bold,
-                      ),
+                      child: Text("98%", style: AppTextStyle.font24bold),
                     ),
                   ),
                 ),
