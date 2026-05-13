@@ -8,8 +8,17 @@ import 'package:syrian_currency/core/constants/app_text_style.dart';
 class MyAppBar extends StatelessWidget {
   final String title;
   final Widget? suffixsIcon;
+  final void Function()? onTap;
+  final void Function()? onBackTap;
   final IconData? icon;
-  const MyAppBar({super.key, required this.title, this.suffixsIcon, this.icon});
+  const MyAppBar({
+    super.key,
+    required this.title,
+    this.suffixsIcon,
+    this.icon,
+    this.onTap,
+    this.onBackTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +42,30 @@ class MyAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                suffixsIcon ??
-                    Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                InkWell(
+                  onTap: onBackTap ?? () {},
+                  child:
+                      suffixsIcon ??
+                      Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                ),
 
                 Text(title, style: AppTextStyle.font20extrabold),
 
-                Container(
-                  width: 40.w,
-                  height: 40.h,
-                  decoration: BoxDecoration(
-                    color: AppColor.blureColor.withOpacity(0.8),
-                    shape: BoxShape.circle,
+                InkWell(
+                  onTap: onTap ?? () {},
+                  child: Container(
+                    width: 40.w,
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                      color: AppColor.blureColor.withOpacity(0.8),
+                      shape: BoxShape.circle,
+                    ),
+
+                    child: Icon(
+                      icon ?? Icons.notifications,
+                      color: Colors.white,
+                    ),
                   ),
-                  child: Icon(icon ?? Icons.notifications, color: Colors.white),
                 ),
               ],
             ),
