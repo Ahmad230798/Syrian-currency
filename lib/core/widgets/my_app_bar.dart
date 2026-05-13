@@ -14,6 +14,7 @@ class MyAppBar extends StatelessWidget {
   final void Function()? onBackTap;
   final IconData? icon;
   final bool showRightIcon;
+
   const MyAppBar({
     super.key,
     required this.title,
@@ -32,8 +33,7 @@ class MyAppBar extends StatelessWidget {
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Color.fromRGBO(23, 30, 41, 0.68),
-
+            color: const Color.fromRGBO(23, 30, 41, 0.68),
             border: Border.all(
               style: BorderStyle.solid,
               width: 1,
@@ -46,45 +46,41 @@ class MyAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // 1. زر الرجوع (اليسار)
                 InkWell(
                   onTap: onBackTap ?? () {},
                   child:
                       suffixsIcon ??
-                      Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                      const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                 ),
 
+                // 2. العنوان (في المنتصف)
                 Text(title, style: AppTextStyle.font20extrabold),
 
+                // 3. الأيقونة اليمنى (مدمجة مع الـ InkWell والشرط)
                 showRightIcon
-                    ? Container(
-                        width: 40.w,
-                        height: 40.h,
-                        decoration: BoxDecoration(
-                          color: AppColor.blureColor.withOpacity(0.8),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          icon ?? Icons.notifications,
-                          color: Colors.white,
+                    ? InkWell(
+                        onTap: onTap ?? () {},
+                        child: Container(
+                          width: 40.w,
+                          height: 40.h,
+                          decoration: BoxDecoration(
+                            color: AppColor.blureColor.withOpacity(0.8),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            icon ?? Icons.notifications,
+                            color: Colors.white,
+                          ),
                         ),
                       )
-                    : SizedBox(width: 40.w),
-                InkWell(
-                  onTap: onTap ?? () {},
-                  child: Container(
-                    width: 40.w,
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                      color: AppColor.blureColor.withOpacity(0.8),
-                      shape: BoxShape.circle,
-                    ),
-
-                    child: Icon(
-                      icon ?? Icons.notifications,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                    : SizedBox(
+                        width: 40.w,
+                      ), // صندوق فارغ للحفاظ على توسيط العنوان
               ],
             ),
           ),
