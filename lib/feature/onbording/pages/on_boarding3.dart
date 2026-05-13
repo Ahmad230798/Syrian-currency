@@ -17,8 +17,8 @@ class OnBoarding3 extends StatelessWidget {
         const OnBoardingHeader(),
         SizedBox(height: 33.h),
         OnboardingPicHolder(
-          color1: Color(0xFF3C83F6).withOpacity(0.02),
-          color2: Color(0xFF3C83F6).withOpacity(0.1),
+          color1: Color(0xFF3C83F6).withValues(alpha: 0.00),
+          color2: Color(0xFF3C83F6).withValues(alpha: 0.1),
           hight: 224.h,
           imagePath: "assets/images/onboarding3image.png",
           isActive: true,

@@ -41,7 +41,7 @@ class OnboardingPicHolder extends StatelessWidget {
             top: -60,
             right: -60,
             child: _glow(
-              color1 ?? Colors.white.withOpacity(0.03),
+              color1 ?? Colors.white.withOpacity(0.00),
               color2 ?? Colors.white.withOpacity(0.15),
             ),
           ),
@@ -50,7 +50,7 @@ class OnboardingPicHolder extends StatelessWidget {
             bottom: -60,
             left: -60,
             child: _glow(
-              color1 ?? Colors.white.withOpacity(0.03),
+              color1 ?? Colors.white.withOpacity(0.00),
               color2 ?? Colors.white.withOpacity(0.15),
             ),
           ),

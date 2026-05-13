@@ -13,7 +13,7 @@ class OnBoarding2 extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-      const  OnBoardingHeader(),
+        const OnBoardingHeader(),
         SizedBox(height: 33.h),
         Container(
           height: 340.h,
@@ -25,8 +25,8 @@ class OnBoarding2 extends StatelessWidget {
               radius: 0.75,
               tileMode: TileMode.decal,
               colors: [
-                Color(0xFF3C83F6).withOpacity(0.20),
-                Color(0xFF3C83F6).withOpacity(0.08),
+                Color(0xFF3C83F6).withOpacity(0.00),
+                Color(0xFF3C83F6).withOpacity(0.06),
                 Colors.transparent,
               ],
               stops: [0.0, 0.45, 1.0],

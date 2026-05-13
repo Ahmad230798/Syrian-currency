@@ -14,17 +14,16 @@ class _BodySectionState extends State<BodySection> {
   int _selectedIndex = 0;
   final List<String> _options = ["All", "Genuine", "Counterfeit"];
   Widget _buildList(int type) {
-    // هنا نحدد البيانات بناءً على النوع
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 5, // مثال
+      itemCount: 5,
       itemBuilder: (context, index) {
         if (type == 1) return const ScanCard(color: AppColor.green);
         if (type == 2) {
           return const ScanCard(result: "Counterfeit", color: AppColor.red);
         }
-        return const ScanCard(); // لـ All
+        return const ScanCard();
       },
     );
   }
@@ -34,14 +33,13 @@ class _BodySectionState extends State<BodySection> {
     return Column(
       children: [
         Container(
-          height: 45.h, // الطول المناسب كما في الصورة
+          height: 45.h,
           decoration: BoxDecoration(
             color: AppColor.mainContainerBackGround,
             borderRadius: BorderRadius.circular(25.r),
           ),
           child: LayoutBuilder(
             builder: (context, constraints) {
-              // حساب العرض المتاح لكل عنصر بدقة
               double itemWidth = constraints.maxWidth / _options.length;
 
               return Stack(
