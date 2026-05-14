@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/widgets/options_card.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -258,6 +260,9 @@ class _SettingsOptionsState extends State<SettingsOptions> {
                       child: Icon(Icons.info_outline, color: AppColor.blue),
                     ),
                     text: "About App",
+                    onTap: () {
+                      context.pushNamed(Routes.aboutProject);
+                    },
                   ),
                 ],
               ),

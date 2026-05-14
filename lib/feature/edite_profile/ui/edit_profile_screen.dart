@@ -4,22 +4,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/widgets/app_bottom.dart';
 import 'package:syrian_currency/core/widgets/my_app_bar.dart';
 import 'package:syrian_currency/core/widgets/options_card.dart';
 import 'package:syrian_currency/core/widgets/profile_image_holder.dart';
 import 'package:syrian_currency/feature/edite_profile/widgets/profile_form.dart';
 
-class EditProfileScreen extends StatelessWidget {
+class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
+  @override
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            MyAppBar(title: "Edit Profile"),
+            MyAppBar(
+              title: "Edit Profile",
+              onBackTap: () {
+                context.pop();
+              },
+            ),
 
             Expanded(
               child: SingleChildScrollView(
@@ -61,6 +74,15 @@ class EditProfileScreen extends StatelessWidget {
                             textcolor: Colors.black,
                             icon: Icons.check,
                             color: Colors.black,
+                            onPressed: () {
+                              setState(() {
+                                isLoading = true;
+                                Future.delayed(Duration(seconds: 3), () {
+                                  context.pop();
+                                });
+                              });
+                            },
+                            isLoading: isLoading,
                           ),
                           24.verticalSpace,
                         ],

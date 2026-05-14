@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/core/helper/navigation.dart';
 import 'package:syrian_currency/core/widgets/my_app_bar.dart';
 
 import 'widgets/project_hero_card.dart';
@@ -21,7 +22,13 @@ class AboutProjectScreen extends StatelessWidget {
         backgroundColor: AppColor.backGroundColor,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(90.h),
-          child: const MyAppBar(title: 'Project Details', showRightIcon: false),
+          child: MyAppBar(
+            title: 'Project Details',
+            showRightIcon: false,
+            onBackTap: () {
+              context.pop();
+            },
+          ),
         ),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

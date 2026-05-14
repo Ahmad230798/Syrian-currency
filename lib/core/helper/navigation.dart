@@ -6,7 +6,9 @@ extension Navigation on BuildContext {
   }
 
   Future<dynamic> pushReplacementNamed(String routeName, {Object? arguments}) {
-    return Navigator.of(this).pushReplacementNamed(routeName, arguments: arguments);
+    return Navigator.of(
+      this,
+    ).pushReplacementNamed(routeName, arguments: arguments);
   }
 
   // تعديل: إضافة قيمة افتراضية للـ predicate لحذف كل ما سبق
@@ -22,5 +24,8 @@ extension Navigation on BuildContext {
     );
   }
 
-  void pop() => Navigator.of(this).pop();
+  void pop(
+  ) {
+  return  Navigator.of(this).pop();
+  }
 }

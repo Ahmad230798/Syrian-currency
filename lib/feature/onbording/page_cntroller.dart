@@ -77,7 +77,7 @@ class _PageCntrollerState extends State<PageCntroller> {
               ),
               SizedBox(height: 15.h),
               AppBottom(
-                text: 'Next Step',
+                text: currentIndex == 2 ? 'Get Started' : 'Next Step',
                 onPressed: () {
                   nextPage();
                 },

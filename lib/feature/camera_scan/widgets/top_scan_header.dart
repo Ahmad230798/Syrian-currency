@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/core/helper/navigation.dart';
 
 class TopScanHeader extends StatelessWidget {
   final VoidCallback onInfoTap;
@@ -21,7 +22,7 @@ class TopScanHeader extends StatelessWidget {
           children: [
             _buildGlassButton(
               icon: Icons.arrow_back,
-              onTap: () => Navigator.pop(context),
+              onTap: () => context.pop(),
             ),
             _buildGlassContainer(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),

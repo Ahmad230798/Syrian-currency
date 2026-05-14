@@ -47,13 +47,13 @@ class _HomeScreeenState extends State<HomeScreeen> {
               title: 'Home',
               suffixsIcon: SvgPicture.asset("assets/svgs/app_bar_logo.svg"),
             ),
-            isLoading
-                ? Center(child: CircularProgressIndicator())
-                : Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        child: Column(
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : Column(
                           children: [
                             SizedBox(height: 24.h),
                             ClipRRect(
@@ -109,7 +109,10 @@ class _HomeScreeenState extends State<HomeScreeen> {
                                         ),
                                       ),
                                       SizedBox(height: 24.h),
-                                      const AppBottom(
+                                      AppBottom(
+                                        onPressed: () {
+                                          context.pushNamed(Routes.cameraScan);
+                                        },
                                         text: "Start System Scan",
                                       ),
                                     ],
@@ -163,6 +166,9 @@ class _HomeScreeenState extends State<HomeScreeen> {
                                       61,
                                       145,
                                     ),
+                                    onPressed: () {
+                                      context.pushNamed(Routes.cameraScan);
+                                    },
                                     textStyle: AppTextStyle.font14regular
                                         .copyWith(
                                           color: AppColor.blue,
@@ -177,9 +183,9 @@ class _HomeScreeenState extends State<HomeScreeen> {
                             const ActivitiesList(),
                           ],
                         ),
-                      ),
-                    ),
-                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

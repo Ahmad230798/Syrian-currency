@@ -72,10 +72,13 @@ class ProfileScreen extends StatelessWidget {
                         24.verticalSpace,
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 19.w),
-                          child: const AppBottom(
+                          child: AppBottom(
                             text: "Edit Profile",
                             boxShadow: [],
                             icon: Icons.edit_outlined,
+                            onPressed: () async {
+                              await context.pushNamed(Routes.editProfile);
+                            },
                           ),
                         ),
                         24.verticalSpace,

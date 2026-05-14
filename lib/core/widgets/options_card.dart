@@ -8,11 +8,14 @@ class OptionsCard extends StatelessWidget {
   final String? text;
   final Widget? icon;
   final Widget? mainWidget;
+  final void Function()? onTap;
   const OptionsCard({
     super.key,
     required this.widget,
-     this.text,
-    this.icon, this.mainWidget,
+    this.text,
+    this.icon,
+    this.mainWidget,
+    this.onTap,
   });
 
   @override
@@ -24,21 +27,29 @@ class OptionsCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         color: AppColor.mainContainerBackGround,
       ),
-      child: Row(
-        children: [
-          widget,
-          12.horizontalSpace,
-          mainWidget??Text(
-            text!,
-            style: AppTextStyle.font16medium.copyWith(
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
-          ),
-          Spacer(),
-          icon ??
-              Icon(Icons.arrow_forward_ios, color: AppColor.grayText, size: 15),
-        ],
+      child: InkWell(
+        onTap: onTap ?? () {},
+        child: Row(
+          children: [
+            widget,
+            12.horizontalSpace,
+            mainWidget ??
+                Text(
+                  text!,
+                  style: AppTextStyle.font16medium.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+            Spacer(),
+            icon ??
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppColor.grayText,
+                  size: 15,
+                ),
+          ],
+        ),
       ),
     );
   }
