@@ -1,12 +1,12 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 
 class Authenticity extends StatelessWidget {
-  const Authenticity({
-    super.key,
-  });
+  const Authenticity({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class Authenticity extends StatelessWidget {
               Container(
                 width: 64.w,
                 height: 64.h,
-    
+
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AppColor.green.withOpacity(0.2),
@@ -54,9 +54,7 @@ class Authenticity extends StatelessWidget {
               8.verticalSpace,
               Text(
                 "GENUINE",
-                style: AppTextStyle.font24bold.copyWith(
-                  color: AppColor.green,
-                ),
+                style: AppTextStyle.font24bold.copyWith(color: AppColor.green),
               ),
               16.verticalSpace,
               Text(

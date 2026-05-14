@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
@@ -5,7 +7,11 @@ import 'package:syrian_currency/core/constants/app_color.dart';
 class ProfileImageHolder extends StatelessWidget {
   final String imagePath;
   final IconData icon;
-  const ProfileImageHolder({super.key, required this.imagePath, required this.icon});
+  const ProfileImageHolder({
+    super.key,
+    required this.imagePath,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +28,7 @@ class ProfileImageHolder extends StatelessWidget {
               width: 4.w,
               style: BorderStyle.solid,
             ),
-            image: DecorationImage(
-              image: AssetImage(imagePath),
-            ),
+            image: DecorationImage(image: AssetImage(imagePath)),
           ),
         ),
         Positioned(
