@@ -8,7 +8,7 @@ class DioFactory {
   static Dio? dio;
   static Dio getDio() {
     if (dio == null) {
-      dio = Dio();
+      dio = Dio(
       BaseOptions(
         baseUrl: ApiConstants.apiBaseUrl,
         connectTimeout: const Duration(seconds: 30),
@@ -18,7 +18,7 @@ class DioFactory {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-      );
+      ));
       addDioInterceptor();
       return dio!;
     } else {
@@ -51,44 +51,3 @@ class DioFactory {
     );
   }
 }
-
-//    Dio(
-//           BaseOptions(
-//             baseUrl: ApiConstants.apiBaseUrl,
-//             connectTimeout: const Duration(seconds: 30),
-//             receiveTimeout: const Duration(seconds: 30),
-//             sendTimeout: const Duration(seconds: 30),
-//             headers: {
-//               'Accept': 'application/json',
-//               'Content-Type': 'application/json',
-//             },
-//           ),
-//         )
-//         ..interceptors.add(
-//           InterceptorsWrapper(
-//             onRequest: (options, handler) async {
-//               print(
-//                 "[${options.method}][${options.uri}] headers: ${options.headers}",
-//               );
-
-//               final service = SharedPreferencesService();
-
-//               final token = await service.getAccessToken();
-
-//               if (token != null && token.isNotEmpty) {
-//                 options.headers['Authorization'] = 'Bearer $token';
-//               }
-//               handler.next(options);
-//             },
-//             onResponse: (response, handler) {
-//               // print("${response.data}");
-//               handler.next(response);
-//             },
-//             onError: (error, handler) {
-//               print("DIO ERROR: ${error.response?.data}");
-//               print("STATUS CODE: ${error.response?.statusCode}");
-//               handler.next(error);
-//             },
-//           ),
-//         );
-// }

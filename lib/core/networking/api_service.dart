@@ -15,7 +15,7 @@ class ApiServices {
         url,
         options: Options(headers: finalHeaders),
       );
-      _handleResponse(response);
+      return _handleResponse(response);
     } on DioException catch (e) {
       throw ServerFailure.fromDioError(e);
     }
@@ -39,13 +39,12 @@ class ApiServices {
         data: body,
         options: Options(headers: finalHeaders),
       );
-      _handleResponse(response);
+      return _handleResponse(response);
     } on DioException catch (e) {
       throw ServerFailure.fromDioError(e);
     }
   }
 
-  /// POST FORM-DATA (Multipart)
   Future postFormData({
     required String url,
     required FormData data,
@@ -64,7 +63,7 @@ class ApiServices {
         options: Options(headers: finalHeaders),
       );
 
-      _handleResponse(response);
+      return _handleResponse(response);
     } on DioException catch (e) {
       throw ServerFailure.fromDioError(e);
     }
@@ -79,17 +78,13 @@ class ApiServices {
     try {
       final finalHeaders = {...?headers};
 
-      final response = await _dio.patch(
+      final response = await _dio.put(
         url,
         data: body,
         options: Options(headers: finalHeaders),
       );
 
-      if ([200, 201, 204].contains(response.statusCode)) {
-        return response.data;
-      } else {
-        throw ServerFailure.fromResponse(response.statusCode, response.data);
-      }
+      return _handleResponse(response);
     } on DioException catch (e) {
       throw ServerFailure.fromDioError(e);
     }
