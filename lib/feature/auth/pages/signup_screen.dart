@@ -62,21 +62,25 @@ class SignupScreen extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  "Already have an account? ",
-                                  style: AppTextStyle.font16medium.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                InkWell(
+                                Expanded(
                                   child: Text(
-                                    "Back to Login",
+                                    "Already have an account? ",
                                     style: AppTextStyle.font16medium.copyWith(
                                       fontWeight: FontWeight.w400,
-                                      color: AppColor.blue,
                                     ),
                                   ),
-                                  onTap: () => context.pop(),
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    child: Text(
+                                      "Back to Login",
+                                      style: AppTextStyle.font16medium.copyWith(
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColor.blue,
+                                      ),
+                                    ),
+                                    onTap: () => context.pop(),
+                                  ),
                                 ),
                               ],
                             ),
