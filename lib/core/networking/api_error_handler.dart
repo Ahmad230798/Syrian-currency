@@ -1,6 +1,7 @@
 // ignore_for_file: unreachable_switch_default
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:syrian_currency/core/errors/api_error_model.dart';
 
 abstract class Failure {
   final String errorMessage;
@@ -43,7 +44,17 @@ class ServerFailure extends Failure {
   }
 
   factory ServerFailure.fromResponse(int? statusCode, dynamic responseData) {
-    final extractedMessage = _extractErrorMessage(responseData);
+    String? extractedMessage;
+    if (responseData is Map<String, dynamic>) {
+      try {
+        final errorModel = ApiErrorModel.fromJson(responseData);
+        extractedMessage = errorModel.primaryErrorMessage;
+      } catch (e) {
+        extractedMessage = null;
+      }
+    } else if (responseData is String && responseData.isNotEmpty) {
+      extractedMessage = responseData;
+    }
 
     switch (statusCode) {
       case 400:
@@ -76,36 +87,37 @@ class ServerFailure extends Failure {
         return ServerFailure(extractedMessage ?? "Something went wrong");
     }
   }
-  static String? _extractErrorMessage(dynamic data) {
-    if (data == null) return null;
-    if (data is String && data.isNotEmpty) {
-      return data;
-    }
-    if (data is Map<String, dynamic>) {
-      final messages = <String>[];
-      if (data['message'] is String && data['message'].toString().isNotEmpty) {
-        messages.add(data['message']);
-      }
-      if (data['error'] is String && data['error'].toString().isNotEmpty) {
-        messages.add(data['error']);
-      }
-      for (final entry in data.entries) {
-        final value = entry.value;
-
-        if (value is List) {
-          for (final item in value) {
-            if (item is String && item.isNotEmpty) {
-              messages.add(item);
-            }
-          }
-        } else if (value is String && value.isNotEmpty) {
-          messages.add(value);
-        }
-      }
-      if (messages.isNotEmpty) {
-        return " ${messages.join('\n')}";
-      }
-    }
-    return null;
-  }
 }
+//   static String? _extractErrorMessage(dynamic data) {
+//     if (data == null) return null;
+//     if (data is String && data.isNotEmpty) {
+//       return data;
+//     }
+//     if (data is Map<String, dynamic>) {
+//       String messages;
+//       // if (data['message'] is String && data['message'].toString().isNotEmpty) {
+//       //   messages.add(data['message']);
+//       // }
+//       if (data['error'] is String && data['error'].toString().isNotEmpty) {
+//         messages = data['error'];
+//         return messages;
+//       }
+//       for (final entry in data.entries) {
+//         final value = entry.value;
+
+//         if (value is List) {
+//           for (final item in value) {
+//             if (item is String && item.isNotEmpty) {
+//               messages = item;
+//               return messages;
+//             }
+//           }
+//         } else if (value is String && value.isNotEmpty) {
+//           messages = value;
+//           return messages;
+//         }
+//       }
+//     }
+//     return null;
+//   }
+// }
