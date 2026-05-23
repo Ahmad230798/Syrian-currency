@@ -3,11 +3,17 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/helper/snack_bar_helper.dart';
+import 'package:syrian_currency/core/routing/routes.dart';
+import 'package:syrian_currency/feature/auth/logic/login/login_state.dart';
+import 'package:syrian_currency/feature/auth/logic/register/signup_cubit.dart';
+import 'package:syrian_currency/feature/auth/logic/register/signup_state.dart';
 import 'package:syrian_currency/feature/auth/widgets/sign_up_form.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -15,6 +21,8 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<SignupCubit>();
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -55,12 +63,36 @@ class SignupScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 32.h),
-                            const SignUpForm(),
+                            BlocConsumer<SignupCubit, SignupState>(
+                              listener: (context, state) {
+                                if (state is SignupSuccess) {
+                                  SnackBarHelper.showSuccess(
+                                    context,
+                                    "account created successfully",
+                                  );
+                                  context.pop();
+                                }
+                                if (state is SignupFailure) {
+                                  SnackBarHelper.showError(
+                                    context,
+                                    state.errorMessage,
+                                  );
+                                }
+                              },
+                              builder: (context, state) {
+                                bool isLoading = state is SignupLoading;
+                                return SignUpForm(
+                                  cubit: cubit,
+                                  formKey: formKey,
+                                  isLoading: isLoading,
+                                );
+                              },
+                            ),
                             SizedBox(height: 32.h),
                             Divider(color: AppColor.gray, height: 0.1),
                             SizedBox(height: 24.h),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Expanded(
                                   child: Text(

@@ -1,9 +1,15 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:syrian_currency/core/networking/api_service.dart';
+import 'package:syrian_currency/core/networking/dio_factory.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/feature/AI%20Explanation/ai_explanation_screen.dart';
 import 'package:syrian_currency/feature/about_project/about_project_screen.dart';
+import 'package:syrian_currency/feature/auth/logic/register/signup_cubit.dart';
 import 'package:syrian_currency/feature/auth/pages/login_screen.dart';
 import 'package:syrian_currency/feature/auth/pages/signup_screen.dart';
+import 'package:syrian_currency/feature/auth/repo/signup_repo.dart';
 import 'package:syrian_currency/feature/camera_scan/camera_scan_screen.dart';
 import 'package:syrian_currency/feature/edite_profile/ui/edit_profile_screen.dart';
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
@@ -21,7 +27,13 @@ class AppRoute {
       case Routes.logIn:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case Routes.signUp:
-        return MaterialPageRoute(builder: (_) => SignupScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                SignupCubit(SignupRepo(ApiServices(DioFactory.getDio()))),
+            child: SignupScreen(),
+          ),
+        );
       case Routes.home:
         return MaterialPageRoute(builder: (_) => HomeScreeen());
       case Routes.scanResult:
