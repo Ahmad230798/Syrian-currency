@@ -32,7 +32,7 @@ class AppRoute {
             create: (context) => LoginCubit(
               LoginRepo(
                 ApiServices(DioFactory.getDio()),
-                SharedPreferencesService(),
+                SharedPreferencesService() ,
               ),
             ),
             child: LoginScreen(),
