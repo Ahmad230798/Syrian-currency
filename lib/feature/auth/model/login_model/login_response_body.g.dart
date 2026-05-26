@@ -12,5 +12,5 @@ LoginResponseBody _$LoginResponseBodyFromJson(Map<String, dynamic> json) =>
       refresh: json['refresh'] as String,
     );
 
-Map<String, dynamic> _$LoginResponseBodyToJson(LoginResponseBody instance) =>
-    <String, dynamic>{'refresh': instance.refresh, 'access': instance.access};
+// Map<String, dynamic> _$LoginResponseBodyToJson(LoginResponseBody instance) =>
+//     <String, dynamic>{'refresh': instance.refresh, 'access': instance.access};

@@ -10,8 +10,6 @@ import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 import 'package:syrian_currency/core/helper/navigation.dart';
 import 'package:syrian_currency/core/helper/snack_bar_helper.dart';
-import 'package:syrian_currency/core/routing/routes.dart';
-import 'package:syrian_currency/feature/auth/logic/login/login_state.dart';
 import 'package:syrian_currency/feature/auth/logic/register/signup_cubit.dart';
 import 'package:syrian_currency/feature/auth/logic/register/signup_state.dart';
 import 'package:syrian_currency/feature/auth/widgets/sign_up_form.dart';

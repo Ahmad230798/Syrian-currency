@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:syrian_currency/feature/auth/model/signup_model/signup_response_body.dart';
 
