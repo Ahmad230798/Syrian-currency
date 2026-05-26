@@ -14,7 +14,12 @@ class LoginInit extends LoginState {
 class LoginLoading extends LoginState {
   const LoginLoading();
 }
-
+class LoginPasswordVisibilityChanged extends LoginState {
+  final bool isObscure;
+  const LoginPasswordVisibilityChanged(this.isObscure);
+  @override
+  List<Object?> get props => [isObscure];
+}
 class LoginSuccess extends LoginState {
   final LoginResponseBody loginResponseBody;
   const LoginSuccess(this.loginResponseBody);

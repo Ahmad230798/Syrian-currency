@@ -26,7 +26,7 @@ class _HomeScreeenState extends State<HomeScreeen> {
     setState(() {
       isLoading = true;
     });
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 5), () {
       setState(() {
         isLoading = false;
       });

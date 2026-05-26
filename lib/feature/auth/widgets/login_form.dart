@@ -4,23 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
-import 'package:syrian_currency/core/helper/navigation.dart';
-import 'package:syrian_currency/core/routing/routes.dart';
+import 'package:syrian_currency/core/helper/validator.dart';
 import 'package:syrian_currency/core/widgets/app_bottom.dart';
 import 'package:syrian_currency/core/widgets/app_text_form_field.dart';
+import 'package:syrian_currency/feature/auth/logic/login/login_cubit.dart';
+import 'package:syrian_currency/feature/auth/model/login_model/login_request_body.dart';
 
-class LogInForm extends StatefulWidget {
-  const LogInForm({super.key});
-
-  @override
-  State<LogInForm> createState() => _LogInFormState();
-}
-
-class _LogInFormState extends State<LogInForm> {
-  bool isLoading = false;
-  bool isObscureText = true;
-
-  GlobalKey<FormState> formKey = GlobalKey();
+class LogInForm extends StatelessWidget {
+  final LoginCubit cubit;
+  final GlobalKey<FormState> formKey;
+  final bool isLoading;
+  const LogInForm({
+    super.key,
+    required this.cubit,
+    required this.formKey,
+    required this.isLoading,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,18 +41,8 @@ class _LogInFormState extends State<LogInForm> {
           AppTextFormField(
             hinttText: "name@example.com",
             prefixIcone: Icon(Icons.mail_outline, color: Colors.white),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Email is required";
-              }
-
-              final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-              if (!emailRegex.hasMatch(value)) {
-                return "Enter a valid email";
-              }
-
-              return null;
-            },
+            validator: Validators().emailValidator,
+            controller: cubit.emailController,
           ),
           SizedBox(height: 24.h),
           Row(
@@ -82,28 +71,19 @@ class _LogInFormState extends State<LogInForm> {
           SizedBox(height: 8),
           AppTextFormField(
             hinttText: "••••••••",
-            isObscureText: isObscureText,
+            isObscureText: cubit.isObscureText,
             prefixIcone: Icon(Icons.lock_outline, color: Colors.white),
+            controller: cubit.passwordController,
             suffixIcone: InkWell(
               onTap: () {
-                setState(() {
-                  isObscureText = !isObscureText;
-                });
+                cubit.togglePasswordVisibility();
               },
               child: Icon(
-                isObscureText ? Icons.visibility : Icons.visibility_off,
+                cubit.isObscureText ? Icons.visibility : Icons.visibility_off,
                 color: Colors.white,
               ),
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Password is required";
-              }
-              if (value.length < 6) {
-                return "Password must be at least 6 characters";
-              }
-              return null;
-            },
+            validator: Validators().passwordValidator,
           ),
           SizedBox(height: 24.h),
           AppBottom(
@@ -111,12 +91,13 @@ class _LogInFormState extends State<LogInForm> {
             text: "Sign In",
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                setState(() {
-                  isLoading = true;
-                  Future.delayed(Duration(seconds: 3), () {
-                    context.pushNamedAndRemoveUntil(Routes.home);
-                  });
-                });
+                cubit.login(
+                  LoginRequestBody(
+                    email: cubit.emailController.text,
+                    password: cubit.passwordController.text,
+                  ),
+                );
+             
               }
             },
           ),

@@ -16,6 +16,14 @@ class SignupCubit extends Cubit<SignupState> {
     emit(SignupPasswordVisibilityChanged(isObscureText));
   }
 
+  @override
+  Future<void> close() {
+    emailController.dispose();
+    passwordController.dispose();
+    fullNameController.dispose();
+    return super.close();
+  }
+
   SignupCubit(this.signupRepo) : super(SignupInit());
   Future<void> signUp(SignupRequestBody body) async {
     emit(SignupLoading());

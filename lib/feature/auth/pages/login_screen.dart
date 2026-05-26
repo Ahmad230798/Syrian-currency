@@ -3,12 +3,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/helper/snack_bar_helper.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
+import 'package:syrian_currency/feature/auth/logic/login/login_cubit.dart';
+import 'package:syrian_currency/feature/auth/logic/login/login_state.dart';
 import 'package:syrian_currency/feature/auth/widgets/login_form.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -16,6 +20,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<LoginCubit>();
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -59,7 +65,33 @@ class LoginScreen extends StatelessWidget {
                                   style: AppTextStyle.font24bold,
                                 ),
                                 SizedBox(height: 32),
-                                const LogInForm(),
+                                BlocConsumer<LoginCubit, LoginState>(
+                                  listener: (context, state) {
+                                    if (state is LoginSuccess) {
+                                      SnackBarHelper.showSuccess(
+                                        context,
+                                        "login successfully",
+                                      );
+                                      context.pushNamedAndRemoveUntil(
+                                        Routes.home,
+                                      );
+                                    }
+                                    if (state is LoginFailure) {
+                                      SnackBarHelper.showError(
+                                        context,
+                                        state.errorMessage,
+                                      );
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    bool isLoading = state is LoginLoading;
+                                    return LogInForm(
+                                      cubit: cubit,
+                                      formKey: formKey,
+                                      isLoading: isLoading,
+                                    );
+                                  },
+                                ),
                               ],
                             ),
                           ),
