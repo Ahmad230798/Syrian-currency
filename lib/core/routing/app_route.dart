@@ -16,6 +16,8 @@ import 'package:syrian_currency/feature/camera_scan/camera_scan_screen.dart';
 import 'package:syrian_currency/feature/edite_profile/ui/edit_profile_screen.dart';
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
 import 'package:syrian_currency/feature/onbording/page_cntroller.dart';
+import 'package:syrian_currency/feature/profile/logic/profile_cubit.dart';
+import 'package:syrian_currency/feature/profile/repo/profile_repo.dart';
 import 'package:syrian_currency/feature/profile/ui/profile_screen.dart';
 import 'package:syrian_currency/feature/scan_history/ui/scan_history_screen.dart';
 import 'package:syrian_currency/feature/scan_result/ui/scan_result_screen.dart';
@@ -51,7 +53,14 @@ class AppRoute {
       case Routes.scanResult:
         return MaterialPageRoute(builder: (_) => ScanResultScreen());
       case Routes.profile:
-        return MaterialPageRoute(builder: (_) => ProfileScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => ProfileCubit(
+              repo: ProfileRepo(ApiServices(DioFactory.getDio())),
+            )..getProfileInfo(),
+            child: ProfileScreen(),
+          ),
+        );
       case Routes.editProfile:
         return MaterialPageRoute(builder: (_) => EditProfileScreen());
       case Routes.aiExplanation:
