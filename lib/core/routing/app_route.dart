@@ -4,6 +4,7 @@ import 'package:syrian_currency/core/networking/api_service.dart';
 import 'package:syrian_currency/core/networking/dio_factory.dart';
 import 'package:syrian_currency/core/networking/servicse.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
+import 'package:syrian_currency/core/widgets/main_layout_screen.dart';
 import 'package:syrian_currency/feature/AI%20Explanation/ai_explanation_screen.dart';
 import 'package:syrian_currency/feature/about_project/about_project_screen.dart';
 import 'package:syrian_currency/feature/auth/logic/login/login_cubit.dart';
@@ -73,6 +74,8 @@ class AppRoute {
         return MaterialPageRoute(builder: (_) => AboutProjectScreen());
       case Routes.cameraScan:
         return MaterialPageRoute(builder: (_) => CameraScanScreen());
+      case Routes.mainLayout:
+        return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
