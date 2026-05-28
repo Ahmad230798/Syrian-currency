@@ -22,6 +22,26 @@ class UserModel {
     required this.dateJoined,
     this.tierLevel,
   });
+  UserModel copyWith({
+    int? id,
+    String? email,
+    String? fullName,
+    String? role,
+    String? avatar,
+    String? dateJoined,
+    int? tierLevel,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      fullName: fullName ?? this.fullName,
+      role: role ?? this.role,
+      avatar: avatar ?? this.avatar,
+      dateJoined: dateJoined ?? this.dateJoined,
+      tierLevel: tierLevel ?? this.tierLevel,
+    );
+  }
+
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 }
