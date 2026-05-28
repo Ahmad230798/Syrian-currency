@@ -107,7 +107,13 @@ class ProfileScreen extends StatelessWidget {
                                   boxShadow: [],
                                   icon: Icons.edit_outlined,
                                   onPressed: () async {
-                                    await context.pushNamed(Routes.editProfile);
+                                    await context
+                                        .pushNamed(Routes.editProfile)
+                                        .then((_) {
+                                          context
+                                              .read<ProfileCubit>()
+                                              .getProfileInfo();
+                                        });
                                   },
                                 ),
                               ),
