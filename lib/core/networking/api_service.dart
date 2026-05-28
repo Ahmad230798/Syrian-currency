@@ -72,13 +72,13 @@ class ApiServices {
   /// PUT
   Future putData({
     required String url,
-    Map<String, dynamic>? body,
+    required dynamic body,
     Map<String, String>? headers,
   }) async {
     try {
       final finalHeaders = {...?headers};
 
-      final response = await _dio.put(
+      final response = await _dio.patch(
         url,
         data: body,
         options: Options(headers: finalHeaders),
