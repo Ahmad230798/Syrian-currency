@@ -5,12 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/feature/camera_scan/model/scanner_response_model.dart';
 
 class ImageResult extends StatelessWidget {
-  const ImageResult({super.key});
+  final ScanDataModel scanData;
+
+  const ImageResult({super.key, required this.scanData});
 
   @override
   Widget build(BuildContext context) {
+    // بناء رابط الصورة (بدل الـ IP ضع الـ baseUrl الخاص بك إذا تغير)
+    const String baseUrl = "http://192.168.1.14:8000";
+    final String imageUrl = scanData.heatmap != null
+        ? "$baseUrl${scanData.heatmap}"
+        : "$baseUrl${scanData.image}";
+
     return Container(
       decoration: BoxDecoration(
         color: AppColor.mainContainerBackGround,
@@ -30,7 +39,7 @@ class ImageResult extends StatelessWidget {
                   ),
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage("assets/images/result_image.png"),
+                    image: NetworkImage(imageUrl), // عرض الصورة الديناميكية
                   ),
                 ),
               ),
@@ -38,15 +47,14 @@ class ImageResult extends StatelessWidget {
                 child: Container(
                   width: 1.sw,
                   height: 85.h,
-
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Color(0xff3C83F6).withOpacity(0),
-                        Color(0xff3C83F6).withOpacity(0.2),
-                        Color(0xff3C83F6).withOpacity(0),
+                        const Color(0xff3C83F6).withOpacity(0),
+                        const Color(0xff3C83F6).withOpacity(0.2),
+                        const Color(0xff3C83F6).withOpacity(0),
                       ],
-                      stops: [0, 0.5, 1],
+                      stops: const [0, 0.5, 1],
                     ),
                   ),
                 ),
@@ -62,7 +70,6 @@ class ImageResult extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         height: 25.h,
-
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(999.r),
@@ -74,7 +81,7 @@ class ImageResult extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.circle,
                                 color: AppColor.blue,
                                 size: 10,
@@ -94,7 +101,6 @@ class ImageResult extends StatelessWidget {
               ),
             ],
           ),
-
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 22.h),
             child: Row(
@@ -102,25 +108,25 @@ class ImageResult extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("USD 100 Bill", style: AppTextStyle.font20extrabold),
+                    Text("SYP Banknote", style: AppTextStyle.font20extrabold),
                     Text(
-                      "Series 2017 • Benjamin\nFranklin",
+                      "Scan ID: #${scanData.id}",
                       style: AppTextStyle.font14regular,
                     ),
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Column(
                   children: [
                     Text(
-                      "Serial Number",
+                      "System Status",
                       style: AppTextStyle.font12semibold.copyWith(
                         fontWeight: FontWeight.w700,
                         color: AppColor.grayText,
                       ),
                     ),
                     Text(
-                      "LF 18402947B",
+                      scanData.status.toUpperCase(),
                       style: AppTextStyle.font14regular.copyWith(
                         color: AppColor.blue,
                       ),

@@ -10,11 +10,14 @@ class MenuItem extends StatelessWidget {
   final IconData icon;
   final String text;
   final IconData suffixIcon;
+  final Color suffixIconColor; // أضفنا هذا السطر
+
   const MenuItem({
     super.key,
     required this.icon,
     required this.text,
     required this.suffixIcon,
+    this.suffixIconColor = AppColor.green, // القيمة الافتراضية
   });
 
   @override
@@ -32,8 +35,8 @@ class MenuItem extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          Spacer(),
-          Icon(suffixIcon, color: AppColor.green),
+          const Spacer(),
+          Icon(suffixIcon, color: suffixIconColor), // استخدام اللون هنا
         ],
       ),
     );

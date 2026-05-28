@@ -4,6 +4,7 @@ import 'package:syrian_currency/core/networking/api_service.dart';
 import 'package:syrian_currency/core/networking/dio_factory.dart';
 import 'package:syrian_currency/core/networking/servicse.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
+import 'package:syrian_currency/core/widgets/main_layout_screen.dart';
 import 'package:syrian_currency/feature/AI%20Explanation/ai_explanation_screen.dart';
 import 'package:syrian_currency/feature/about_project/about_project_screen.dart';
 import 'package:syrian_currency/feature/auth/logic/login/login_cubit.dart';
@@ -53,7 +54,11 @@ class AppRoute {
       case Routes.home:
         return MaterialPageRoute(builder: (_) => HomeScreeen());
       case Routes.scanResult:
-        return MaterialPageRoute(builder: (_) => ScanResultScreen());
+        // استقبال الداتا الممررة من شاشة الكاميرا
+        final scanData = settings.arguments as ScanDataModel;
+        return MaterialPageRoute(
+          builder: (_) => ScanResultScreen(scanData: scanData),
+        );
       case Routes.profile:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -81,7 +86,19 @@ class AppRoute {
       case Routes.aboutProject:
         return MaterialPageRoute(builder: (_) => AboutProjectScreen());
       case Routes.cameraScan:
-        return MaterialPageRoute(builder: (_) => CameraScanScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => ScannerCubit(
+              ScannerRepo(
+                ApiServices(DioFactory.getDio()),
+                SharedPreferencesService(), // أضف هذا إذا كنت تستخدمه لمعرف الجهاز
+              ),
+            ),
+            child: const CameraScanScreen(),
+          ),
+        );
+      case Routes.mainLayout:
+        return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

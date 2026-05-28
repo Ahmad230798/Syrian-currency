@@ -1,5 +1,3 @@
-
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesService {
@@ -34,5 +32,20 @@ class SharedPreferencesService {
     final prefs = await _prefs;
     await prefs.remove(accessTokenKey);
     await prefs.remove(refreshTokenKey);
+  }
+
+  static const String deviceIdKey = 'device_id';
+
+  // توليد مُعرّف عشوائي للجهاز إذا لم يكن موجوداً
+  Future<String> getDeviceId() async {
+    final prefs = await _prefs;
+    String? deviceId = prefs.getString(deviceIdKey);
+
+    if (deviceId == null) {
+      // توليد مُعرّف يعتمد على الوقت كحل بسيط وسريع
+      deviceId = 'device_${DateTime.now().millisecondsSinceEpoch}';
+      await prefs.setString(deviceIdKey, deviceId);
+    }
+    return deviceId;
   }
 }

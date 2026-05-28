@@ -11,4 +11,5 @@ class Routes {
   static const String scanHistoryScreen = '/scanHistoryScreen';
   static const String aboutProject = '/aboutProject';
   static const String cameraScan = '/cameraScan';
+  static const String mainLayout = '/mainLayout';
 }

@@ -9,16 +9,17 @@ class DioFactory {
   static Dio getDio() {
     if (dio == null) {
       dio = Dio(
-      BaseOptions(
-        baseUrl: ApiConstants.apiBaseUrl,
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-        sendTimeout: const Duration(seconds: 30),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-      ));
+        BaseOptions(
+          baseUrl: ApiConstants.apiBaseUrl,
+          connectTimeout: const Duration(seconds: 120),
+          receiveTimeout: const Duration(seconds: 120),
+          sendTimeout: const Duration(seconds: 120),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
       addDioInterceptor();
       return dio!;
     } else {
@@ -37,7 +38,6 @@ class DioFactory {
           }
           handler.next(options);
         },
-        
       ),
     );
     dio?.interceptors.add(

@@ -73,7 +73,7 @@ class LoginScreen extends StatelessWidget {
                                         "login successfully",
                                       );
                                       context.pushNamedAndRemoveUntil(
-                                        Routes.home,
+                                        Routes.mainLayout,
                                       );
                                     }
                                     if (state is LoginFailure) {
