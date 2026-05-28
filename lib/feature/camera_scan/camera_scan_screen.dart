@@ -1,22 +1,27 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:io';
+import 'dart:ui';
+import 'dart:async'; // ضروري من أجل الـ Timer
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
-import 'package:syrian_currency/feature/AI%20Explanation/ai_explanation_screen.dart';
+import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/helper/snack_bar_helper.dart';
+import 'package:syrian_currency/core/routing/routes.dart';
+
+import 'package:syrian_currency/feature/camera_scan/logic/scanner_cubit.dart';
+import 'package:syrian_currency/feature/camera_scan/logic/scanner_state.dart';
+
 import 'package:syrian_currency/feature/camera_scan/widgets/camera_controls_panel.dart';
 import 'package:syrian_currency/feature/camera_scan/widgets/scan_frame_overlay.dart';
 import 'package:syrian_currency/feature/camera_scan/widgets/scan_hint_overlay.dart';
 import 'package:syrian_currency/feature/camera_scan/widgets/top_scan_header.dart';
-
-// مسارات الاستيراد للويدجت الجديدة (عدّلها حسب مجلداتك)
-// import 'widgets/top_scan_header.dart';
-// import 'widgets/scan_frame_overlay.dart';
-// import 'widgets/scan_hint_overlay.dart';
-// import 'widgets/camera_controls_panel.dart';
 
 class CameraScanScreen extends StatefulWidget {
   const CameraScanScreen({super.key});
@@ -93,12 +98,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
       if (image != null) {
         debugPrint("Image selected: ${image.path}");
         if (context.mounted) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AIExplanationScreen(),
-            ),
-          );
+          context.read<ScannerCubit>().performScan(File(image.path));
         }
       }
     } catch (e) {
@@ -214,69 +214,163 @@ class _CameraScanScreenState extends State<CameraScanScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.backGroundColor,
-      body: Stack(
-        children: [
-          if (_isCameraInitialized && _cameraController != null)
-            SizedBox.expand(child: CameraPreview(_cameraController!))
-          else
-            const Center(
-              child: CircularProgressIndicator(color: AppColor.blue),
-            ),
+      body: BlocConsumer<ScannerCubit, ScannerState>(
+        listener: (context, state) {
+          if (state is ScannerFailure) {
+            SnackBarHelper.showError(context, state.errorMessage);
+          } else if (state is ScannerSuccess) {
+            if (state.response.data != null) {
+              context.pushReplacementNamed(
+                Routes.scanResult,
+                arguments: state.response.data,
+              );
+            }
+          }
+        },
+        builder: (context, state) {
+          bool isLoading = state is ScannerLoading;
 
-          Container(color: Colors.black.withOpacity(0.4)),
+          return Stack(
+            children: [
+              if (_isCameraInitialized && _cameraController != null)
+                SizedBox.expand(child: CameraPreview(_cameraController!))
+              else
+                const Center(
+                  child: CircularProgressIndicator(color: AppColor.blue),
+                ),
 
-          Center(child: ScanFrameOverlay(animation: _animation)),
+              Container(color: Colors.black.withOpacity(0.4)),
 
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: TopScanHeader(onInfoTap: _showInstructionsDialog),
-          ),
+              Center(child: ScanFrameOverlay(animation: _animation)),
 
-          Positioned(
-            bottom: 32.h,
-            left: 0,
-            right: 0,
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: TopScanHeader(onInfoTap: _showInstructionsDialog),
+              ),
+
+              Positioned(
+                bottom: 32.h,
+                left: 0,
+                right: 0,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const ScanHintOverlay(),
+                    24.verticalSpace,
+                    CameraControlsPanel(
+                      isFlashOn: _isFlashOn,
+                      onFlashToggle: _toggleFlash,
+                      onGalleryTap: () => _openGallery(context),
+                      onCaptureTap: () async {
+                        if (_cameraController != null &&
+                            _cameraController!.value.isInitialized) {
+                          try {
+                            final XFile image = await _cameraController!
+                                .takePicture();
+                            if (_isFlashOn) await _toggleFlash();
+
+                            if (context.mounted) {
+                              context.read<ScannerCubit>().performScan(
+                                File(image.path),
+                              );
+                            }
+                          } catch (e) {
+                            debugPrint("Capture error: $e");
+                          }
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              // استدعاء واجهة التحميل الذكية
+              if (isLoading) const SmartLoadingOverlay(),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+// -------------------------------------------------------------
+// واجهة تحميل ذكية تتغير نصوصها لتسلية المستخدم خلال الـ 90 ثانية
+// -------------------------------------------------------------
+class SmartLoadingOverlay extends StatefulWidget {
+  const SmartLoadingOverlay({super.key});
+
+  @override
+  State<SmartLoadingOverlay> createState() => _SmartLoadingOverlayState();
+}
+
+class _SmartLoadingOverlayState extends State<SmartLoadingOverlay> {
+  int _currentIndex = 0;
+  late Timer _timer;
+
+  final List<String> _messages = [
+    "Uploading Image...",
+    "Initializing SYP SHIELD AI...",
+    "Running DeepCAE Anomaly Detection...",
+    "Extracting security features...",
+    "Analyzing Grad-CAM Heatmaps...",
+    "This process may take up to 90 seconds.\nPlease do not close the app...",
+    "Finalizing results...",
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    // تغيير النص كل 12 ثانية لإبقاء المستخدم على علم بأن التطبيق لم يتوقف
+    _timer = Timer.periodic(const Duration(seconds: 12), (timer) {
+      if (mounted) {
+        setState(() {
+          if (_currentIndex < _messages.length - 1) {
+            _currentIndex++;
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black.withOpacity(0.75),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32.w),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const ScanHintOverlay(),
-                24.verticalSpace,
-                CameraControlsPanel(
-                  isFlashOn: _isFlashOn,
-                  onFlashToggle: _toggleFlash,
-                  onGalleryTap: () => _openGallery(context),
-                  onCaptureTap: () async {
-                    if (_cameraController != null &&
-                        _cameraController!.value.isInitialized) {
-                      try {
-                        final XFile image = await _cameraController!
-                            .takePicture();
-                        debugPrint("Captured image: ${image.path}");
-
-                        if (_isFlashOn) {
-                          await _toggleFlash();
-                        }
-
-                        if (context.mounted) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AIExplanationScreen(),
-                            ),
-                          );
-                        }
-                      } catch (e) {
-                        debugPrint("Capture error: $e");
-                      }
-                    }
-                  },
+                const CircularProgressIndicator(color: AppColor.blue),
+                32.verticalSpace,
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  child: Text(
+                    _messages[_currentIndex],
+                    key: ValueKey<int>(_currentIndex),
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.font16medium.copyWith(
+                      color: Colors.white,
+                      height: 1.5,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

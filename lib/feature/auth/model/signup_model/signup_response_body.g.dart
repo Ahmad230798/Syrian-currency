@@ -12,5 +12,5 @@ SignupResponseBody _$SignupResponseBodyFromJson(Map<String, dynamic> json) =>
       fullName: json['full_name'] as String,
     );
 
-// Map<String, dynamic> _$SignupResponseBodyToJson(SignupResponseBody instance) =>
-//     <String, dynamic>{'email': instance.email, 'full_name': instance.fullName};
+Map<String, dynamic> _$SignupResponseBodyToJson(SignupResponseBody instance) =>
+    <String, dynamic>{'email': instance.email, 'full_name': instance.fullName};

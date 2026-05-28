@@ -14,6 +14,9 @@ import 'package:syrian_currency/feature/auth/pages/signup_screen.dart';
 import 'package:syrian_currency/feature/auth/repo/login_repo.dart';
 import 'package:syrian_currency/feature/auth/repo/signup_repo.dart';
 import 'package:syrian_currency/feature/camera_scan/camera_scan_screen.dart';
+import 'package:syrian_currency/feature/camera_scan/logic/scanner_cubit.dart';
+import 'package:syrian_currency/feature/camera_scan/model/scanner_response_model.dart';
+import 'package:syrian_currency/feature/camera_scan/repo/scanner_repo.dart';
 import 'package:syrian_currency/feature/edite_profile/ui/edit_profile_screen.dart';
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
 import 'package:syrian_currency/feature/onbording/page_cntroller.dart';
@@ -52,7 +55,11 @@ class AppRoute {
       case Routes.home:
         return MaterialPageRoute(builder: (_) => HomeScreeen());
       case Routes.scanResult:
-        return MaterialPageRoute(builder: (_) => ScanResultScreen());
+        // استقبال الداتا الممررة من شاشة الكاميرا
+        final scanData = settings.arguments as ScanDataModel;
+        return MaterialPageRoute(
+          builder: (_) => ScanResultScreen(scanData: scanData),
+        );
       case Routes.profile:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -73,7 +80,17 @@ class AppRoute {
       case Routes.aboutProject:
         return MaterialPageRoute(builder: (_) => AboutProjectScreen());
       case Routes.cameraScan:
-        return MaterialPageRoute(builder: (_) => CameraScanScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => ScannerCubit(
+              ScannerRepo(
+                ApiServices(DioFactory.getDio()),
+                SharedPreferencesService(), // أضف هذا إذا كنت تستخدمه لمعرف الجهاز
+              ),
+            ),
+            child: const CameraScanScreen(),
+          ),
+        );
       case Routes.mainLayout:
         return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
       default:

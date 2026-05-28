@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +13,8 @@ import 'package:syrian_currency/core/networking/dio_factory.dart';
 
 // استدعاء شاشاتك الفعلية
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
+import 'package:syrian_currency/feature/scan_history/logic/scan_history_cubit.dart';
+import 'package:syrian_currency/feature/scan_history/repo/scan_history_repo.dart';
 import 'package:syrian_currency/feature/scan_history/ui/scan_history_screen.dart';
 import 'package:syrian_currency/feature/profile/logic/profile_cubit.dart';
 import 'package:syrian_currency/feature/profile/repo/profile_repo.dart';
@@ -31,11 +35,17 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
   @override
   void initState() {
     super.initState();
-    // تهيئة الشاشات الحقيقية هنا
     _screens = [
       const HomeScreeen(),
-      const ScanHistoryScreen(),
-      // شاشة البروفايل مع الـ Bloc الخاص بها
+
+      // 👈 تم التعديل هنا لربط الـ Cubit
+      BlocProvider(
+        create: (context) =>
+            ScanHistoryCubit(ScanHistoryRepo(ApiServices(DioFactory.getDio())))
+              ..fetchHistory(), // يتم استدعاء البيانات فور بناء الشاشة
+        child: const ScanHistoryScreen(),
+      ),
+
       BlocProvider(
         create: (context) =>
             ProfileCubit(repo: ProfileRepo(ApiServices(DioFactory.getDio())))

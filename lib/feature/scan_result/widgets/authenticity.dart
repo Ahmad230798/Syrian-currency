@@ -4,12 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/feature/camera_scan/model/scanner_response_model.dart';
 
 class Authenticity extends StatelessWidget {
-  const Authenticity({super.key});
+  final ScanDataModel scanData;
+
+  const Authenticity({super.key, required this.scanData});
 
   @override
   Widget build(BuildContext context) {
+    bool isGenuine = scanData.isGenuine;
+    Color resultColor = isGenuine ? AppColor.green : Colors.redAccent;
+
     return Container(
       width: 1.sw,
       decoration: BoxDecoration(
@@ -32,33 +38,36 @@ class Authenticity extends StatelessWidget {
               Container(
                 width: 64.w,
                 height: 64.h,
-
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColor.green.withOpacity(0.2),
+                  color: resultColor.withOpacity(0.2),
                   border: Border.all(
                     strokeAlign: 1,
-                    color: AppColor.green.withOpacity(0.3),
+                    color: resultColor.withOpacity(0.3),
                     style: BorderStyle.solid,
                     width: 3,
                   ),
                 ),
                 child: Center(
                   child: Icon(
-                    Icons.verified_outlined,
-                    color: AppColor.green.withOpacity(1),
+                    isGenuine
+                        ? Icons.verified_outlined
+                        : Icons.gpp_bad_outlined,
+                    color: resultColor,
                     size: 33,
                   ),
                 ),
               ),
               8.verticalSpace,
               Text(
-                "GENUINE",
-                style: AppTextStyle.font24bold.copyWith(color: AppColor.green),
+                isGenuine ? "GENUINE" : "COUNTERFEIT",
+                style: AppTextStyle.font24bold.copyWith(color: resultColor),
               ),
               16.verticalSpace,
               Text(
-                "All security features match federal reserve\nstandards",
+                isGenuine
+                    ? "All security features match federal reserve\nstandards"
+                    : "Security anomaly detected in the note structures\nFailed AI verification",
                 style: AppTextStyle.font12semibold.copyWith(
                   fontWeight: FontWeight.w500,
                   color: AppColor.grayText,
