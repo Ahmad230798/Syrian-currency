@@ -43,114 +43,130 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
         create: (context) =>
             ScanHistoryCubit(ScanHistoryRepo(ApiServices(DioFactory.getDio())))
               ..fetchHistory(), // يتم استدعاء البيانات فور بناء الشاشة
-        child: const ScanHistoryScreen(),
+        child: const ScanHistoryScreen(isFromBottomNav: true),
       ),
 
       BlocProvider(
         create: (context) =>
             ProfileCubit(repo: ProfileRepo(ApiServices(DioFactory.getDio())))
               ..getProfileInfo(),
-        child: const ProfileScreen(),
+        child: const ProfileScreen(isFromBottomNav: true),
       ),
-      const SettingsScreen(),
+      const SettingsScreen(isFromBottomNav: true),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true, // ضروري لجعل الشاشة تمتد خلف الـ BottomNavBar
-      backgroundColor: const Color.fromRGBO(15, 20, 30, 1), // لون الخلفية العام
-      // استخدام IndexedStack للحفاظ على حالة الشاشات عند التنقل
-      body: IndexedStack(index: _currentIndex, children: _screens),
+    return PopScope(
+      canPop: _currentIndex == 0, // السماح بالرجوع فقط من الشاشة الرئيسية
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        setState(() {
+          _currentIndex = 0;
+        });
+      },
+      child: Scaffold(
+        extendBody: true, // ضروري لجعل الشاشة تمتد خلف الـ BottomNavBar
+        backgroundColor: const Color.fromRGBO(
+          15,
+          20,
+          30,
+          1,
+        ), // لون الخلفية العام
+        // استخدام IndexedStack للحفاظ على حالة الشاشات عند التنقل
+        body: IndexedStack(index: _currentIndex, children: _screens),
 
-      // 1. الزر العائم في المنتصف (الكاميرا)
-      floatingActionButton: Container(
-        height: 64.w,
-        width: 64.w,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: AppColor.blue.withOpacity(0.5),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: FloatingActionButton(
-          onPressed: () {
-            // الانتقال إلى شاشة الكاميرا دون تغيير الـ Index الأساسي
-            context.pushNamed(Routes.cameraScan);
-          },
-          backgroundColor: AppColor.blue,
-          elevation: 0,
-          shape: const CircleBorder(),
-          child: Icon(
-            Icons.camera_alt_rounded,
-            color: Colors.white,
-            size: 30.w,
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-      // 2. الشريط السفلي المخصص
-      bottomNavigationBar: BottomAppBar(
-        color: const Color.fromRGBO(23, 30, 41, 0.95),
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 8.h, // مساحة الفراغ حول الزر العائم
-        elevation: 10,
-        child: SizedBox(
-          height: 85.h, // تم زيادة الارتفاع لحل مشكلة التجاوز (Overflow)
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // القسم الأيمن (Home - History)
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildNavItem(
-                      icon: Icons.home_outlined,
-                      activeIcon: Icons.home,
-                      label: 'Home',
-                      index: 0,
-                    ),
-                    _buildNavItem(
-                      icon: Icons.history_outlined,
-                      activeIcon: Icons.history,
-                      label: 'History',
-                      index: 1,
-                    ),
-                  ],
-                ),
-              ),
-
-              // مساحة فارغة في المنتصف للزر العائم
-              SizedBox(width: 48.w),
-
-              // القسم الأيسر (Profile - Settings)
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildNavItem(
-                      icon: Icons.person_outline,
-                      activeIcon: Icons.person,
-                      label: 'Profile',
-                      index: 2,
-                    ),
-                    _buildNavItem(
-                      icon: Icons.settings_outlined,
-                      activeIcon: Icons.settings,
-                      label: 'Settings',
-                      index: 3,
-                    ),
-                  ],
-                ),
+        // 1. الزر العائم في المنتصف (الكاميرا)
+        floatingActionButton: Container(
+          height: 64.w,
+          width: 64.w,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColor.blue.withOpacity(0.5),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
               ),
             ],
+          ),
+          child: FloatingActionButton(
+            onPressed: () {
+              // الانتقال إلى شاشة الكاميرا دون تغيير الـ Index الأساسي
+              context.pushNamed(Routes.cameraScan);
+            },
+            backgroundColor: AppColor.blue,
+            elevation: 0,
+            shape: const CircleBorder(),
+            child: Icon(
+              Icons.camera_alt_rounded,
+              color: Colors.white,
+              size: 30.w,
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+        // 2. الشريط السفلي المخصص
+        bottomNavigationBar: BottomAppBar(
+          color: const Color.fromRGBO(23, 30, 41, 0.95),
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 8.h, // مساحة الفراغ حول الزر العائم
+          elevation: 10,
+          child: SizedBox(
+            height: 85.h, // تم زيادة الارتفاع لحل مشكلة التجاوز (Overflow)
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // القسم الأيمن (Home - History)
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildNavItem(
+                        icon: Icons.home_outlined,
+                        activeIcon: Icons.home,
+                        label: 'Home',
+                        index: 0,
+                      ),
+                      _buildNavItem(
+                        icon: Icons.history_outlined,
+                        activeIcon: Icons.history,
+                        label: 'History',
+                        index: 1,
+                      ),
+                    ],
+                  ),
+                ),
+
+                // مساحة فارغة في المنتصف للزر العائم
+                SizedBox(width: 48.w),
+
+                // القسم الأيسر (Profile - Settings)
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildNavItem(
+                        icon: Icons.person_outline,
+                        activeIcon: Icons.person,
+                        label: 'Profile',
+                        index: 2,
+                      ),
+                      _buildNavItem(
+                        icon: Icons.settings_outlined,
+                        activeIcon: Icons.settings,
+                        label: 'Settings',
+                        index: 3,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

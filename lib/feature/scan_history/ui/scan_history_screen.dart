@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:syrian_currency/core/helper/navigation.dart';
 import 'package:syrian_currency/core/widgets/my_app_bar.dart';
 import 'package:syrian_currency/feature/scan_history/widgets/body_section.dart';
 
 class ScanHistoryScreen extends StatelessWidget {
-  const ScanHistoryScreen({super.key});
+  final bool isFromBottomNav;
+  const ScanHistoryScreen({super.key, this.isFromBottomNav = false});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,13 @@ class ScanHistoryScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            MyAppBar(title: "Scan History"),
+            MyAppBar(
+              title: "Scan History",
+              suffixsIcon: isFromBottomNav ? SizedBox() : null,
+              onBackTap: () {
+                context.pop();
+              },
+            ),
             24.verticalSpace,
             Expanded(
               child: SingleChildScrollView(

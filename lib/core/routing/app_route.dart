@@ -14,6 +14,9 @@ import 'package:syrian_currency/feature/auth/pages/signup_screen.dart';
 import 'package:syrian_currency/feature/auth/repo/login_repo.dart';
 import 'package:syrian_currency/feature/auth/repo/signup_repo.dart';
 import 'package:syrian_currency/feature/camera_scan/camera_scan_screen.dart';
+import 'package:syrian_currency/feature/camera_scan/logic/scanner_cubit.dart';
+import 'package:syrian_currency/feature/camera_scan/model/scanner_response_model.dart';
+import 'package:syrian_currency/feature/camera_scan/repo/scanner_repo.dart';
 import 'package:syrian_currency/feature/edite_profile/logic/edite_profile_cubit.dart';
 import 'package:syrian_currency/feature/edite_profile/repo/edit_profile_repo.dart';
 import 'package:syrian_currency/feature/edite_profile/ui/edit_profile_screen.dart';
@@ -65,7 +68,7 @@ class AppRoute {
             create: (context) => ProfileCubit(
               repo: ProfileRepo(ApiServices(DioFactory.getDio())),
             )..getProfileInfo(),
-            child: ProfileScreen(),
+            child: const ProfileScreen(isFromBottomNav: false),
           ),
         );
       case Routes.editProfile:
@@ -80,9 +83,13 @@ class AppRoute {
       case Routes.aiExplanation:
         return MaterialPageRoute(builder: (_) => AIExplanationScreen());
       case Routes.settingScreen:
-        return MaterialPageRoute(builder: (_) => SettingsScreen());
+        return MaterialPageRoute(
+          builder: (_) => SettingsScreen(isFromBottomNav: false),
+        );
       case Routes.scanHistoryScreen:
-        return MaterialPageRoute(builder: (_) => ScanHistoryScreen());
+        return MaterialPageRoute(
+          builder: (_) => ScanHistoryScreen(isFromBottomNav: false),
+        );
       case Routes.aboutProject:
         return MaterialPageRoute(builder: (_) => AboutProjectScreen());
       case Routes.cameraScan:
