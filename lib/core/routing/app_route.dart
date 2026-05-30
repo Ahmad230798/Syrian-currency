@@ -8,6 +8,8 @@ import 'package:syrian_currency/core/widgets/main_layout_screen.dart';
 import 'package:syrian_currency/feature/AI%20Explanation/ai_explanation_screen.dart';
 import 'package:syrian_currency/feature/about_project/about_project_screen.dart';
 import 'package:syrian_currency/feature/admin_dashboard/admin_layout_screen.dart';
+import 'package:syrian_currency/feature/admin_dashboard/logic/admin_cubit.dart';
+import 'package:syrian_currency/feature/admin_dashboard/repo/admin_repo.dart';
 import 'package:syrian_currency/feature/auth/logic/login/login_cubit.dart';
 import 'package:syrian_currency/feature/auth/logic/register/signup_cubit.dart';
 import 'package:syrian_currency/feature/auth/pages/login_screen.dart';
@@ -82,7 +84,14 @@ class AppRoute {
           ),
         );
       case Routes.adminDashboard:
-        return MaterialPageRoute(builder: (_) => AdminLayoutScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                AdminCubit(AdminRepo(ApiServices(DioFactory.getDio())))
+                  ..fetchAllAdminData(), // 👈 جلب كل البيانات فور فتح الشاشة
+            child: const AdminLayoutScreen(),
+          ),
+        );
       case Routes.aiExplanation:
         return MaterialPageRoute(builder: (_) => AIExplanationScreen());
       case Routes.settingScreen:

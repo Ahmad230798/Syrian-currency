@@ -30,7 +30,7 @@ class AdminStatCard extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0), // 👈 قللنا البادينغ ليرتاح النص
           decoration: BoxDecoration(
             color: AppColor.mainContainerBackGround.withOpacity(0.5),
             border: Border.all(color: Colors.white.withOpacity(0.05), width: 1),
@@ -38,7 +38,7 @@ class AdminStatCard extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,27 +60,25 @@ class AdminStatCard extends StatelessWidget {
                   ),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: AppTextStyle.font14regular.copyWith(
-                      color: AppColor.grayText,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 4.0),
-                  Text(
-                    value,
-                    style: AppTextStyle.font24bold.copyWith(
-                      color: iconColor == AppColor.red
-                          ? AppColor.lightRed
-                          : Colors.white,
-                      fontSize: 24,
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 16.0),
+              Text(
+                title,
+                style: AppTextStyle.font14regular.copyWith(
+                  color: AppColor.grayText,
+                  fontSize: 14,
+                ),
+                maxLines: 1, // 👈 منع النص من النزول لسطر جديد
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4.0),
+              Text(
+                value,
+                style: AppTextStyle.font24bold.copyWith(
+                  color: iconColor == AppColor.red
+                      ? AppColor.lightRed
+                      : Colors.white,
+                  fontSize: 24,
+                ),
               ),
             ],
           ),

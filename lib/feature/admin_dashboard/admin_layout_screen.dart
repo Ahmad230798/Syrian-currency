@@ -240,11 +240,6 @@ class _AdminLayoutScreenState extends State<AdminLayoutScreen> {
           // Actions
           Row(
             children: [
-              const Icon(
-                Icons.notifications_outlined,
-                color: AppColor.grayText,
-                size: 24.0,
-              ),
               const SizedBox(width: 16.0),
               const Icon(
                 Icons.shield_outlined,

@@ -8,6 +8,7 @@ class LoginCubit extends Cubit<LoginState> {
   bool isObscureText = true;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
   void togglePasswordVisibility() {
     isObscureText = !isObscureText;
     emit(LoginPasswordVisibilityChanged(isObscureText));
@@ -21,13 +22,15 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   final LoginRepo loginRepo;
-  LoginCubit(this.loginRepo) : super(LoginInit());
+  LoginCubit(this.loginRepo) : super(const LoginInit());
+
   Future<void> login(LoginRequestBody body) async {
-    emit(LoginLoading());
+    emit(const LoginLoading());
     final result = await loginRepo.login(body);
     result.fold(
       (failure) => emit(LoginFailure(failure.errorMessage)),
-      (success) => emit(LoginSuccess(success)),
+      // success هنا تحتوي على الـ role (مثلاً 'admin' أو 'expert' أو 'user')
+      (role) => emit(LoginSuccess(role)),
     );
   }
 }
