@@ -7,6 +7,7 @@ import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/widgets/main_layout_screen.dart';
 import 'package:syrian_currency/feature/AI%20Explanation/ai_explanation_screen.dart';
 import 'package:syrian_currency/feature/about_project/about_project_screen.dart';
+import 'package:syrian_currency/feature/admin_dashboard/admin_layout_screen.dart';
 import 'package:syrian_currency/feature/auth/logic/login/login_cubit.dart';
 import 'package:syrian_currency/feature/auth/logic/register/signup_cubit.dart';
 import 'package:syrian_currency/feature/auth/pages/login_screen.dart';
@@ -71,6 +72,8 @@ class AppRoute {
         );
       case Routes.editProfile:
         return MaterialPageRoute(builder: (_) => EditProfileScreen());
+      case Routes.adminDashboard:
+        return MaterialPageRoute(builder: (_) => AdminLayoutScreen());
       case Routes.aiExplanation:
         return MaterialPageRoute(builder: (_) => AIExplanationScreen());
       case Routes.settingScreen:
