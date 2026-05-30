@@ -17,7 +17,8 @@ import 'package:syrian_currency/feature/profile/widgets/info_card.dart';
 import 'package:syrian_currency/core/widgets/options_card.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final bool isFromBottomNav;
+  const ProfileScreen({super.key, this.isFromBottomNav = false});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class ProfileScreen extends StatelessWidget {
             MyAppBar(
               title: "Profile",
               icon: Icons.settings,
+              suffixsIcon: isFromBottomNav ? SizedBox() : null,
               onBackTap: () {
                 context.pop();
               },
@@ -107,7 +109,13 @@ class ProfileScreen extends StatelessWidget {
                                   boxShadow: [],
                                   icon: Icons.edit_outlined,
                                   onPressed: () async {
-                                    await context.pushNamed(Routes.editProfile);
+                                    await context
+                                        .pushNamed(Routes.editProfile)
+                                        .then((_) {
+                                          context
+                                              .read<ProfileCubit>()
+                                              .getProfileInfo();
+                                        });
                                   },
                                 ),
                               ),

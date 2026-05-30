@@ -51,11 +51,7 @@ class MyAppBar extends StatelessWidget {
                   onTap: onBackTap ?? () {},
                   child:
                       suffixsIcon ??
-                      const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 30,
-                      ),
+                      Icon(Icons.arrow_back, color: Colors.white, size: 30),
                 ),
 
                 // 2. العنوان (في المنتصف)

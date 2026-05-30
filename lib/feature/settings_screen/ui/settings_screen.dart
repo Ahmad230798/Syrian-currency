@@ -11,7 +11,8 @@ import 'package:syrian_currency/core/widgets/profile_image_holder.dart';
 import 'package:syrian_currency/feature/settings_screen/widgets/settings_options.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+  final bool isFromBottomNav;
+  const SettingsScreen({super.key, this.isFromBottomNav = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class SettingsScreen extends StatelessWidget {
               MyAppBar(
                 title: "Settings",
                 icon: Icons.settings,
+                suffixsIcon: isFromBottomNav ? SizedBox() : null,
                 onBackTap: () {
                   context.pop();
                 },
