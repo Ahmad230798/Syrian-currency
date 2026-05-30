@@ -29,6 +29,8 @@ import 'package:syrian_currency/feature/profile/logic/profile_cubit.dart';
 import 'package:syrian_currency/feature/profile/repo/profile_repo.dart';
 import 'package:syrian_currency/feature/profile/ui/profile_screen.dart';
 import 'package:syrian_currency/feature/scan_history/ui/scan_history_screen.dart';
+import 'package:syrian_currency/feature/scan_result/logic/feedback_cubit.dart';
+import 'package:syrian_currency/feature/scan_result/repo/feedback_repo.dart';
 import 'package:syrian_currency/feature/scan_result/ui/scan_result_screen.dart';
 import 'package:syrian_currency/feature/settings_screen/ui/settings_screen.dart';
 
@@ -60,10 +62,19 @@ class AppRoute {
       case Routes.home:
         return MaterialPageRoute(builder: (_) => HomeScreeen());
       case Routes.scanResult:
-        // استقبال الداتا الممررة من شاشة الكاميرا
-        final scanData = settings.arguments as ScanDataModel;
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
-          builder: (_) => ScanResultScreen(scanData: scanData),
+          builder: (_) => BlocProvider(
+            create: (context) => FeedbackCubit(
+              FeedbackRepo(
+                ApiServices(DioFactory.getDio()),
+              ), // تأكد من الـ Imports
+            ),
+            child: ScanResultScreen(
+              scanData: args['scanData'],
+              isExpert: args['isExpert'] ?? false,
+            ),
+          ),
         );
       case Routes.profile:
         return MaterialPageRoute(

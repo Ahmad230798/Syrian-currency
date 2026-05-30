@@ -39,6 +39,8 @@ class LoginRepo {
 
       final String userRole = profileResponse['role'] ?? 'user';
 
+      await pref.saveUserRole(userRole);
+
       // 3. إرجاع الصلاحية للـ Cubit
       return Right(userRole);
     } on ServerFailure catch (e) {

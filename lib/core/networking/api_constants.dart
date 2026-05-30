@@ -1,5 +1,6 @@
 class ApiConstants {
-  static const String apiBaseUrl = "http://127.0.0.1:8000/api/";
+  static const String baseUrl = "http://10.128.187.164:8000";
+  static const String apiBaseUrl = "http://10.128.187.164:8000/api/";
 
   // Auth & Profile
   static const String login = "auth/login/";
@@ -17,4 +18,8 @@ class ApiConstants {
   static const String adminAllHistory = "scanner/admin/history/";
   static const String adminAllPolicies = "policies/all/";
   static const String adminUpdatePolicy = "policies/admin/role/";
+
+  // EXPERT ENDPOINTS
+  static const String createFeedback = "policies/feedback/";
+  static const String expertFeed = "scanner/expert/feed/";
 }

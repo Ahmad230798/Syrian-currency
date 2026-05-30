@@ -24,9 +24,9 @@ class ScanDataModel {
   final String status;
   final String result;
   @JsonKey(name: 'mse_score')
-  final double mseScore;
+  final double? mseScore;
   final double threshold;
-  final double confidence;
+  final double? confidence;
   @JsonKey(name: 'is_genuine')
   final bool isGenuine;
   final String? notes;
@@ -40,9 +40,9 @@ class ScanDataModel {
     this.heatmapUrl,
     required this.status,
     required this.result,
-    required this.mseScore,
+    this.mseScore,
     required this.threshold,
-    required this.confidence,
+    this.confidence,
     required this.isGenuine,
     this.notes,
     required this.createdAt,
