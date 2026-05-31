@@ -205,13 +205,6 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                     24.verticalSpace,
                                     AppBottom(
-                                      onPressed: () {
-                                        final pref = SharedPreferencesService();
-                                        pref.clearTokens();
-                                        context.pushNamedAndRemoveUntil(
-                                          Routes.logIn,
-                                        );
-                                      },
                                       text: "Log Out",
                                       boxShadow: const [],
                                       color: AppColor.red,
@@ -221,7 +214,12 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       icon: Icons.logout,
                                       onPressed: () {
-                                        // TODO: دالة تسجيل الخروج
+                                        // 👈 مرة واحدة فقط، وتحتوي على الكود الصحيح
+                                        final pref = SharedPreferencesService();
+                                        pref.clearTokens();
+                                        context.pushNamedAndRemoveUntil(
+                                          Routes.logIn,
+                                        );
                                       },
                                     ),
                                   ],
