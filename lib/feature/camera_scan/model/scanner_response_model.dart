@@ -23,6 +23,7 @@ class ScanDataModel {
   final String? heatmapUrl;
   final String status;
   final String result;
+
   @JsonKey(name: 'mse_score')
   final double? mseScore;
   final double threshold;

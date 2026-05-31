@@ -22,6 +22,8 @@ import 'package:syrian_currency/feature/camera_scan/repo/scanner_repo.dart';
 import 'package:syrian_currency/feature/edite_profile/logic/edite_profile_cubit.dart';
 import 'package:syrian_currency/feature/edite_profile/repo/edit_profile_repo.dart';
 import 'package:syrian_currency/feature/edite_profile/ui/edit_profile_screen.dart';
+import 'package:syrian_currency/feature/home/logic/home_cubit.dart';
+import 'package:syrian_currency/feature/home/repo/home_repo.dart';
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
 import 'package:syrian_currency/feature/my_reports/logic/my_reports_cubit.dart';
 import 'package:syrian_currency/feature/my_reports/repo/my_reports_repo.dart';
@@ -34,6 +36,8 @@ import 'package:syrian_currency/feature/scan_history/ui/scan_history_screen.dart
 import 'package:syrian_currency/feature/scan_result/logic/feedback_cubit.dart';
 import 'package:syrian_currency/feature/scan_result/repo/feedback_repo.dart';
 import 'package:syrian_currency/feature/scan_result/ui/scan_result_screen.dart';
+import 'package:syrian_currency/feature/settings_screen/logic/setting_cubit.dart';
+import 'package:syrian_currency/feature/settings_screen/repo/setting_repo.dart';
 import 'package:syrian_currency/feature/settings_screen/ui/settings_screen.dart';
 
 class AppRoute {
@@ -62,7 +66,17 @@ class AppRoute {
           ),
         );
       case Routes.home:
-        return MaterialPageRoute(builder: (_) => HomeScreeen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => HomeCubit(
+              HomeRepo(
+                ApiServices(DioFactory.getDio()),
+                SharedPreferencesService(),
+              ),
+            )..getScanHistory(),
+            child: HomeScreeen(),
+          ),
+        );
       case Routes.scanResult:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
@@ -118,7 +132,12 @@ class AppRoute {
         return MaterialPageRoute(builder: (_) => AIExplanationScreen());
       case Routes.settingScreen:
         return MaterialPageRoute(
-          builder: (_) => SettingsScreen(isFromBottomNav: false),
+          builder: (_) => BlocProvider(
+            create: (context) => SettingCubit(
+              repo: SettingRepo(ApiServices(DioFactory.getDio())),
+            )..getUsernfo(),
+            child: SettingsScreen(isFromBottomNav: false),
+          ),
         );
       case Routes.scanHistoryScreen:
         return MaterialPageRoute(

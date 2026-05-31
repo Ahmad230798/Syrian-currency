@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/networking/servicse.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/widgets/app_bottom.dart';
 import 'package:syrian_currency/core/widgets/my_app_bar.dart';
@@ -204,6 +205,13 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                     24.verticalSpace,
                                     AppBottom(
+                                      onPressed: () {
+                                        final pref = SharedPreferencesService();
+                                        pref.clearTokens();
+                                        context.pushNamedAndRemoveUntil(
+                                          Routes.logIn,
+                                        );
+                                      },
                                       text: "Log Out",
                                       boxShadow: const [],
                                       color: AppColor.red,
