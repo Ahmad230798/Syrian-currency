@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: avoid_print, deprecated_member_use
 
 import 'dart:ui'; // 👈 أضفناها من أجل تأثير الـ Blur (BackdropFilter)
 import 'package:flutter/material.dart';
@@ -366,7 +366,7 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
                     ),
                   ),
                   onPressed: () {
-                    // TODO: منطق التصدير
+                    // TODO:
                     print("تصدير التقرير");
                   },
                   icon: const Icon(Icons.download, size: 20),

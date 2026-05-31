@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_import
+// ignore_for_file: deprecated_member_use, curly_braces_in_flow_control_structures, unnecessary_import
 
 import 'dart:ui';
 import 'package:dotted_border/dotted_border.dart';

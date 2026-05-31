@@ -18,12 +18,14 @@ import 'package:syrian_currency/feature/auth/repo/login_repo.dart';
 import 'package:syrian_currency/feature/auth/repo/signup_repo.dart';
 import 'package:syrian_currency/feature/camera_scan/camera_scan_screen.dart';
 import 'package:syrian_currency/feature/camera_scan/logic/scanner_cubit.dart';
-import 'package:syrian_currency/feature/camera_scan/model/scanner_response_model.dart';
 import 'package:syrian_currency/feature/camera_scan/repo/scanner_repo.dart';
 import 'package:syrian_currency/feature/edite_profile/logic/edite_profile_cubit.dart';
 import 'package:syrian_currency/feature/edite_profile/repo/edit_profile_repo.dart';
 import 'package:syrian_currency/feature/edite_profile/ui/edit_profile_screen.dart';
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
+import 'package:syrian_currency/feature/my_reports/logic/my_reports_cubit.dart';
+import 'package:syrian_currency/feature/my_reports/repo/my_reports_repo.dart';
+import 'package:syrian_currency/feature/my_reports/ui/my_reports_screen.dart';
 import 'package:syrian_currency/feature/onbording/page_cntroller.dart';
 import 'package:syrian_currency/feature/profile/logic/profile_cubit.dart';
 import 'package:syrian_currency/feature/profile/repo/profile_repo.dart';
@@ -83,6 +85,15 @@ class AppRoute {
               repo: ProfileRepo(ApiServices(DioFactory.getDio())),
             )..getProfileInfo(),
             child: const ProfileScreen(isFromBottomNav: false),
+          ),
+        );
+      case Routes.myReports: // تأكد من إضافة myReports إلى ملف routes.dart
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                MyReportsCubit(MyReportsRepo(ApiServices(DioFactory.getDio())))
+                  ..fetchMyReports(),
+            child: const MyReportsScreen(),
           ),
         );
       case Routes.editProfile:
