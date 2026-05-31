@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -37,47 +37,47 @@ class _HomeScreeenState extends State<HomeScreeen> {
               suffixsIcon: SvgPicture.asset("assets/svgs/app_bar_logo.svg"),
             ),
             BlocConsumer<HomeCubit, HomeState>(
-              // 🌟 Listener: يراقب حالات الفحص دون تدمير الشاشة
+              // داخل BlocConsumer في HomeScreeen
               listener: (context, state) {
                 if (state is ScanLoading) {
-                  // إظهار نافذة تحميل منبثقة
+                  // 🌟 إظهار الواجهة الذكية كـ Dialog شفاف
                   showDialog(
                     context: context,
                     barrierDismissible: false,
-                    builder: (_) =>
-                        const Center(child: CircularProgressIndicator()),
+                    builder: (_) => const Material(
+                      // ضروري لمنع ظهور خطوط صفراء تحت النصوص في الـ Dialog
+                      type: MaterialType.transparency,
+                      child: SmartLoadingOverlay(),
+                    ),
                   );
                 } else if (state is ScannerFailure) {
-                  Navigator.pop(context); // إغلاق نافذة التحميل
+                  Navigator.pop(context); // إغلاق واجهة التحميل
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
                         state.errorMessage,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                       backgroundColor: Colors.red,
                     ),
                   );
                 } else if (state is ScannerSuccess) {
-                  Navigator.pop(context); // إغلاق نافذة التحميل
-                  // 🌟 هنا يمكنك الانتقال لشاشة النتيجة لاحقاً
-                  // context.pushNamed(Routes.scanResult, arguments: state.successResponse);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Scan Successful!"),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
+                  Navigator.pop(context); // إغلاق واجهة التحميل
+
+                  // 🌟 الانتقال لصفحة النتيجة وتمرير البيانات (بنفس الطريقة التي فعلتها في الكاميرا)
+                  if (state.response.data != null) {
+                    context.pushNamed(
+                      Routes.scanResult,
+                      arguments: {
+                        'scanData': state.response.data,
+                        // إذا لم تكن الصلاحية متوفرة في HomeCubit حالياً، يمكنك تمرير false كافتراضي
+                        // أو إضافتها لاحقاً إذا لزم الأمر
+                        'isExpert': false,
+                      },
+                    );
+                  }
                 }
               },
-
-              // 🌟 buildWhen: لحماية الشاشة من الاختفاء
-              buildWhen: (previous, current) {
-                return current is HomeLoading ||
-                    current is HomeFailure ||
-                    current is HomeSuccess;
-              },
-
               // 🌟 Builder: يبني الشاشة بناءً على حالات السجل فقط
               builder: (context, state) {
                 final cubit = context.read<HomeCubit>();
@@ -242,6 +242,77 @@ class _HomeScreeenState extends State<HomeScreeen> {
               },
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SmartLoadingOverlay extends StatefulWidget {
+  const SmartLoadingOverlay({super.key});
+
+  @override
+  State<SmartLoadingOverlay> createState() => _SmartLoadingOverlayState();
+}
+
+class _SmartLoadingOverlayState extends State<SmartLoadingOverlay> {
+  int _currentIndex = 0;
+  late Timer _timer;
+
+  final List<String> _messages = [
+    "Uploading Image...",
+    "Initializing SYP SHIELD AI...",
+    "Running DeepCAE Anomaly Detection...",
+    "Extracting security features...",
+    "Analyzing Grad-CAM Heatmaps...",
+    "This process may take up to 90 seconds.\nPlease do not close the app...",
+    "Finalizing results...",
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    // تغيير النص كل 12 ثانية لإبقاء المستخدم على علم بأن التطبيق لم يتوقف
+    _timer = Timer.periodic(const Duration(seconds: 12), (timer) {
+      if (mounted) {
+        setState(() {
+          if (_currentIndex < _messages.length - 1) {
+            _currentIndex++;
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black.withOpacity(0.75),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(color: AppColor.blue),
+                32.verticalSpace,
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  child: Text(
+                    _messages[_currentIndex],
+                    key: ValueKey<int>(_currentIndex),
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.font16medium.copyWith(
+                      color: Colors.white,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
