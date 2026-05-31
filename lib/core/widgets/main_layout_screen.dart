@@ -7,9 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/networking/servicse.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/networking/api_service.dart';
 import 'package:syrian_currency/core/networking/dio_factory.dart';
+import 'package:syrian_currency/feature/home/logic/home_cubit.dart';
+import 'package:syrian_currency/feature/home/repo/home_repo.dart';
 
 // استدعاء شاشاتك الفعلية
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
@@ -19,6 +22,8 @@ import 'package:syrian_currency/feature/scan_history/ui/scan_history_screen.dart
 import 'package:syrian_currency/feature/profile/logic/profile_cubit.dart';
 import 'package:syrian_currency/feature/profile/repo/profile_repo.dart';
 import 'package:syrian_currency/feature/profile/ui/profile_screen.dart';
+import 'package:syrian_currency/feature/settings_screen/logic/setting_cubit.dart';
+import 'package:syrian_currency/feature/settings_screen/repo/setting_repo.dart';
 import 'package:syrian_currency/feature/settings_screen/ui/settings_screen.dart';
 
 class MainLayoutScreen extends StatefulWidget {
@@ -36,7 +41,15 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
   void initState() {
     super.initState();
     _screens = [
-      const HomeScreeen(),
+      BlocProvider(
+        create: (context) => HomeCubit(
+          HomeRepo(
+            ApiServices(DioFactory.getDio()),
+            SharedPreferencesService(),
+          ),
+        )..getScanHistory(),
+        child: const HomeScreeen(),
+      ),
 
       // 👈 تم التعديل هنا لربط الـ Cubit
       BlocProvider(
@@ -52,7 +65,12 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
               ..getProfileInfo(),
         child: const ProfileScreen(isFromBottomNav: true),
       ),
-      const SettingsScreen(isFromBottomNav: true),
+      BlocProvider(
+        create: (context) =>
+            SettingCubit(repo: SettingRepo(ApiServices(DioFactory.getDio())))
+              ..getUsernfo(),
+        child: const SettingsScreen(isFromBottomNav: true),
+      ),
     ];
   }
 

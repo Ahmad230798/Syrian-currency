@@ -24,7 +24,7 @@ class AiConfidence extends StatelessWidget {
     // تقوم برفع النسبة المنخفضة لتبدو احترافية، ولا تتجاوز 99% أبداً.
     // مثال: 50% تصبح 70%. و 80% تصبح 88%.
     // -------------------------------------------------------------
-    double originalConf = scanData.confidence;
+    double originalConf = scanData.confidence!;
     double displayConfidence = originalConf + ((100 - originalConf) * 0.4);
 
     // تأمين إضافي حتى لا يصل الرقم إلى 100% (99.9 كحد أقصى للمصداقية)
@@ -72,7 +72,7 @@ class AiConfidence extends StatelessWidget {
               ),
               16.verticalSpace,
               Text(
-                "MSE Error Score: ${scanData.mseScore.toStringAsFixed(5)}",
+                "MSE Error Score: ${scanData.mseScore!.toStringAsFixed(5)}",
                 style: AppTextStyle.font12semibold.copyWith(
                   fontWeight: FontWeight.w500,
                   color: AppColor.grayText,

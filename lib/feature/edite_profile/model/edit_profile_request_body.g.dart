@@ -10,7 +10,7 @@ EditProfileRequestBody _$EditProfileRequestBodyFromJson(
   Map<String, dynamic> json,
 ) => EditProfileRequestBody(
   fullName: json['full_name'] as String,
-  avatar: json['avatar'] as String,
+  avatar: json['avatar'] as String?,
 );
 
 Map<String, dynamic> _$EditProfileRequestBodyToJson(

@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
@@ -9,6 +11,7 @@ import 'package:syrian_currency/core/helper/navigation.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/widgets/app_bottom.dart';
 import 'package:syrian_currency/core/widgets/my_app_bar.dart';
+import 'package:syrian_currency/feature/home/logic/home_cubit.dart';
 import 'package:syrian_currency/feature/home/widget/activities_list.dart';
 
 class HomeScreeen extends StatefulWidget {
@@ -19,20 +22,6 @@ class HomeScreeen extends StatefulWidget {
 }
 
 class _HomeScreeenState extends State<HomeScreeen> {
-  bool isLoading = false;
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      isLoading = true;
-    });
-    Future.delayed(Duration(seconds: 5), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,13 +36,71 @@ class _HomeScreeenState extends State<HomeScreeen> {
               title: 'Home',
               suffixsIcon: SvgPicture.asset("assets/svgs/app_bar_logo.svg"),
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: isLoading
-                      ? Center(child: CircularProgressIndicator())
-                      : Column(
+            BlocConsumer<HomeCubit, HomeState>(
+              // 🌟 Listener: يراقب حالات الفحص دون تدمير الشاشة
+              listener: (context, state) {
+                if (state is ScanLoading) {
+                  // إظهار نافذة تحميل منبثقة
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) =>
+                        const Center(child: CircularProgressIndicator()),
+                  );
+                } else if (state is ScannerFailure) {
+                  Navigator.pop(context); // إغلاق نافذة التحميل
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        state.errorMessage,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                } else if (state is ScannerSuccess) {
+                  Navigator.pop(context); // إغلاق نافذة التحميل
+                  // 🌟 هنا يمكنك الانتقال لشاشة النتيجة لاحقاً
+                  // context.pushNamed(Routes.scanResult, arguments: state.successResponse);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Scan Successful!"),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                }
+              },
+
+              // 🌟 buildWhen: لحماية الشاشة من الاختفاء
+              buildWhen: (previous, current) {
+                return current is HomeLoading ||
+                    current is HomeFailure ||
+                    current is HomeSuccess;
+              },
+
+              // 🌟 Builder: يبني الشاشة بناءً على حالات السجل فقط
+              builder: (context, state) {
+                final cubit = context.read<HomeCubit>();
+                if (state is HomeLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state is HomeFailure) {
+                  return Center(
+                    child: Text(
+                      state.errorMessage,
+                      style: AppTextStyle.font14regular.copyWith(
+                        color: AppColor.red,
+                      ),
+                    ),
+                  );
+                }
+                if (state is HomeSuccess) {
+                  final scanHistory = state.historyList;
+                  return Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: Column(
                           children: [
                             SizedBox(height: 24.h),
                             ClipRRect(
@@ -167,7 +214,7 @@ class _HomeScreeenState extends State<HomeScreeen> {
                                       145,
                                     ),
                                     onPressed: () {
-                                      context.pushNamed(Routes.cameraScan);
+                                      cubit.pickImage();
                                     },
                                     textStyle: AppTextStyle.font14regular
                                         .copyWith(
@@ -180,11 +227,18 @@ class _HomeScreeenState extends State<HomeScreeen> {
                               ),
                             ),
                             SizedBox(height: 16.h),
-                            const ActivitiesList(),
+                            ActivitiesList(
+                              scanHistory: scanHistory,
+                              cubit: cubit,
+                            ),
                           ],
                         ),
-                ),
-              ),
+                      ),
+                    ),
+                  );
+                }
+                return SizedBox.shrink();
+              },
             ),
           ],
         ),
