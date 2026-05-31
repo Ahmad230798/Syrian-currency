@@ -19,9 +19,9 @@ final class ScanLoading extends HomeState {
   const ScanLoading();
 }
 
-final class ImagePickedState extends HomeState {
-  const ImagePickedState();
-}
+// final class ImagePickedState extends HomeState {
+//   const ImagePickedState();
+// }
 
 final class ImageFailureState extends HomeState {
   final String errorMessage;

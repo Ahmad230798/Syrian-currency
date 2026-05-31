@@ -23,6 +23,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int number = 0;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -149,9 +150,13 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                   ),
                                   12.horizontalSpace,
-                                  const Expanded(
+                                  Expanded(
                                     child: InfoCard(
-                                      number: "15",
+                                      number:
+                                          (user.counterfeitScans == 0
+                                                  ? number += 1
+                                                  : 0)
+                                              .toString(),
                                       text: "SAFE DAYS",
                                     ),
                                   ),

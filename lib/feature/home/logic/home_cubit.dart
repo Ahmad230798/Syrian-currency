@@ -17,7 +17,6 @@ class HomeCubit extends Cubit<HomeState> {
   void toggleMoreState() {
     if (state is HomeSuccess) {
       final currentState = state as HomeSuccess;
-      print("//////////////////////");
       // 🌟 3. نرسل الحالة مع عكس قيمة isMore الحالية
       emit(
         HomeSuccess(
@@ -34,8 +33,6 @@ class HomeCubit extends Cubit<HomeState> {
       if (image != null) {
         selectedImage = File(image.path);
         performScan(selectedImage!);
-        getScanHistory();
-        // emit(const ImagePickedState());
       }
     } catch (e) {
       emit(ImageFailureState(errorMessage: "فشل في اختيار الصورة"));
@@ -53,24 +50,24 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> performScan(File imageFile) async {
     // 1. إخبار الواجهة بإظهار شاشة التحميل
-    emit(ScanLoading());
+    emit(const ScanLoading());
 
-    // 2. إرسال الصورة للسيرفر
+    // 2. إرسال الصورة للسيرفر وانتظار النتيجة
     final result = await _repo.scanCurrency(imageFile);
 
-    // 3. معالجة النتيجة القادمة من dartz (Either)
+    // 3. معالجة النتيجة
     result.fold(
       (failure) {
-        // خطأ في الاتصال أو السيرفر (مثل 400، 401، 500)
         emit(ScannerFailure(failure.errorMessage));
+        getScanHistory(); // 🌟 إعادة جلب السجل لتعود الشاشة لوضعها الطبيعي
       },
       (success) {
-        // نجاح الاتصال، لكن نتحقق هل الذكاء الاصطناعي وجد عملة فعلاً؟
         if (success.success == true && success.data != null) {
           emit(ScannerSuccess(success));
+          getScanHistory(); // 🌟 السيرفر انتهى وحفظ الفحص، الآن نجلب السجل الجديد وسوف يظهر فوراً!
         } else {
-          // الذكاء الاصطناعي أرجع خطأ (مثلاً: "الصورة لا تحتوي على عملة سورية")
           emit(ScannerFailure(success.message ?? "فشل تحليل الصورة"));
+          getScanHistory(); // 🌟 إعادة جلب السجل لتعود الشاشة لوضعها الطبيعي
         }
       },
     );

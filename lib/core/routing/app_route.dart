@@ -4,6 +4,7 @@ import 'package:syrian_currency/core/networking/api_service.dart';
 import 'package:syrian_currency/core/networking/dio_factory.dart';
 import 'package:syrian_currency/core/networking/servicse.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
+import 'package:syrian_currency/core/widgets/main_layout_cubit.dart';
 import 'package:syrian_currency/core/widgets/main_layout_screen.dart';
 import 'package:syrian_currency/feature/AI%20Explanation/ai_explanation_screen.dart';
 import 'package:syrian_currency/feature/about_project/about_project_screen.dart';
@@ -32,6 +33,8 @@ import 'package:syrian_currency/feature/onbording/page_cntroller.dart';
 import 'package:syrian_currency/feature/profile/logic/profile_cubit.dart';
 import 'package:syrian_currency/feature/profile/repo/profile_repo.dart';
 import 'package:syrian_currency/feature/profile/ui/profile_screen.dart';
+import 'package:syrian_currency/feature/scan_history/logic/scan_history_cubit.dart';
+import 'package:syrian_currency/feature/scan_history/repo/scan_history_repo.dart';
 import 'package:syrian_currency/feature/scan_history/ui/scan_history_screen.dart';
 import 'package:syrian_currency/feature/scan_result/logic/feedback_cubit.dart';
 import 'package:syrian_currency/feature/scan_result/repo/feedback_repo.dart';
@@ -141,7 +144,12 @@ class AppRoute {
         );
       case Routes.scanHistoryScreen:
         return MaterialPageRoute(
-          builder: (_) => ScanHistoryScreen(isFromBottomNav: false),
+          builder: (_) => BlocProvider(
+            create: (context) => ScanHistoryCubit(
+              ScanHistoryRepo(ApiServices(DioFactory.getDio())),
+            )..fetchHistory(),
+            child: ScanHistoryScreen(isFromBottomNav: false),
+          ),
         );
       case Routes.aboutProject:
         return MaterialPageRoute(builder: (_) => AboutProjectScreen());
@@ -158,12 +166,33 @@ class AppRoute {
           ),
         );
       case Routes.mainLayout:
-        return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => MainLayoutCubit()),
+              // 🌟 توفير HomeCubit هنا ليكون متاحاً دائماً
+              BlocProvider(
+                create: (context) => HomeCubit(
+                  HomeRepo(
+                    ApiServices(DioFactory.getDio()),
+                    SharedPreferencesService(),
+                  ),
+                )..getScanHistory(),
+              ),
+              // 🌟 توفير ScanHistoryCubit هنا ليكون متاحاً دائماً
+              BlocProvider(
+                create: (context) => ScanHistoryCubit(
+                  ScanHistoryRepo(ApiServices(DioFactory.getDio())),
+                )..fetchHistory(),
+              ),
+            ],
+            child: const MainLayoutScreen(),
+          ),
+        );
       default:
         return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(child: Text('No route defined for ${settings.name}')),
-          ),
+          builder: (_) =>
+              const Scaffold(body: Center(child: Text('Page not found'))),
         );
     }
   }
