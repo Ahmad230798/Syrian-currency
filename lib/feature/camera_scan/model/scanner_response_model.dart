@@ -26,7 +26,7 @@ class ScanDataModel {
 
   @JsonKey(name: 'mse_score')
   final double? mseScore;
-  final double? threshold;
+  final double threshold;
   final double? confidence;
   @JsonKey(name: 'is_genuine')
   final bool isGenuine;

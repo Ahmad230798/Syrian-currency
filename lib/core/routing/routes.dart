@@ -12,4 +12,6 @@ class Routes {
   static const String aboutProject = '/aboutProject';
   static const String cameraScan = '/cameraScan';
   static const String mainLayout = '/mainLayout';
+  static const String adminDashboard = '/adminDashboard';
+  static const String myReports = '/myReports';
 }

@@ -13,6 +13,17 @@ class UserModel {
   final String dateJoined;
   @JsonKey(name: 'tier_level')
   int? tierLevel;
+
+  // 👈 الحقول الجديدة التي يرسلها الباك إند
+  @JsonKey(name: 'total_scans')
+  final int? totalScans;
+
+  @JsonKey(name: 'genuine_scans')
+  final int? genuineScans;
+
+  @JsonKey(name: 'counterfeit_scans')
+  final int? counterfeitScans;
+
   UserModel({
     required this.id,
     required this.email,
@@ -21,7 +32,11 @@ class UserModel {
     this.avatar,
     required this.dateJoined,
     this.tierLevel,
+    this.totalScans, // 👈 إضافة للـ Constructor
+    this.genuineScans, // 👈 إضافة للـ Constructor
+    this.counterfeitScans, // 👈 إضافة للـ Constructor
   });
+
   UserModel copyWith({
     int? id,
     String? email,
@@ -30,6 +45,9 @@ class UserModel {
     String? avatar,
     String? dateJoined,
     int? tierLevel,
+    int? totalScans,
+    int? genuineScans,
+    int? counterfeitScans,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -39,6 +57,9 @@ class UserModel {
       avatar: avatar ?? this.avatar,
       dateJoined: dateJoined ?? this.dateJoined,
       tierLevel: tierLevel ?? this.tierLevel,
+      totalScans: totalScans ?? this.totalScans,
+      genuineScans: genuineScans ?? this.genuineScans,
+      counterfeitScans: counterfeitScans ?? this.counterfeitScans,
     );
   }
 

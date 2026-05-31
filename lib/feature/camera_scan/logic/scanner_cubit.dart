@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:syrian_currency/core/networking/api_constants.dart'; // 👈 تأكد من وجود هذا الاستيراد
 import 'package:syrian_currency/feature/camera_scan/logic/scanner_state.dart';
 import 'package:syrian_currency/feature/camera_scan/repo/scanner_repo.dart';
 
@@ -9,24 +10,33 @@ class ScannerCubit extends Cubit<ScannerState> {
   ScannerCubit(this.scannerRepo) : super(ScannerInitial());
 
   Future<void> performScan(File imageFile) async {
-    // 1. إخبار الواجهة بإظهار شاشة التحميل
     emit(ScannerLoading());
 
-    // 2. إرسال الصورة للسيرفر
     final result = await scannerRepo.scanCurrency(imageFile);
 
-    // 3. معالجة النتيجة القادمة من dartz (Either)
     result.fold(
       (failure) {
-        // خطأ في الاتصال أو السيرفر (مثل 400، 401، 500)
         emit(ScannerFailure(failure.errorMessage));
       },
-      (success) {
-        // نجاح الاتصال، لكن نتحقق هل الذكاء الاصطناعي وجد عملة فعلاً؟
+      (success) async {
+        // 👈 أضفنا async هنا
         if (success.success == true && success.data != null) {
-          emit(ScannerSuccess(success));
+          bool isUserExpert = false;
+          try {
+            // 👈 خدعة ذكية: نجلب بروفايل المستخدم بسرعة للتأكد من صلاحيته
+            final profile = await scannerRepo.apiServices.getData(
+              url: ApiConstants.userProfile,
+            );
+            if (profile['role'] == 'expert') {
+              isUserExpert = true;
+            }
+          } catch (e) {
+            // سيتم تجاهل الخطأ بصمت إذا كان المستخدم زائر (Guest) ولا يملك توكن
+          }
+
+          // نمرر النتيجة والصلاحية معاً!
+          emit(ScannerSuccess(success, isExpert: isUserExpert));
         } else {
-          // الذكاء الاصطناعي أرجع خطأ (مثلاً: "الصورة لا تحتوي على عملة سورية")
           emit(ScannerFailure(success.message ?? "فشل تحليل الصورة"));
         }
       },

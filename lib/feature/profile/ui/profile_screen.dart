@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
             MyAppBar(
               title: "Profile",
               icon: Icons.settings,
-              suffixsIcon: isFromBottomNav ? SizedBox() : null,
+              suffixsIcon: isFromBottomNav ? const SizedBox() : null,
               onBackTap: () {
                 context.pop();
               },
@@ -58,13 +58,23 @@ class ProfileScreen extends StatelessWidget {
                           return Center(
                             child: Text(
                               state.errorMessage,
-                              style: TextStyle(color: Colors.red),
+                              style: const TextStyle(color: Colors.red),
                             ),
                           );
                         }
 
                         if (state is ProfileSuccess) {
                           final user = state.user;
+                          // 👈 1. تحديد هل المستخدم خبير لمعرفة كيفية عرض الواجهة
+                          final bool isExpert =
+                              user.role == 'expert' || user.role == 'admin';
+                          final Color badgeColor = isExpert
+                              ? Colors.purpleAccent
+                              : AppColor.blue;
+                          final String badgeText = isExpert
+                              ? "SHIELD AI EXPERT"
+                              : "SHIELD AI MEMBER";
+
                           return Column(
                             children: [
                               ProfileImageHolder(
@@ -84,12 +94,13 @@ class ProfileScreen extends StatelessWidget {
                                 children: [
                                   Icon(
                                     Icons.shield_outlined,
-                                    color: AppColor.blue,
+                                    color:
+                                        badgeColor, // 👈 استخدام اللون الديناميكي
                                   ),
                                   Text(
-                                    "SHIELD AI MEMBER",
+                                    badgeText, // 👈 استخدام النص الديناميكي
                                     style: AppTextStyle.font14regular.copyWith(
-                                      color: AppColor.blue,
+                                      color: badgeColor,
                                       fontWeight: FontWeight.w600,
                                       height: 20 / 14,
                                       letterSpacing: 0.7,
@@ -107,7 +118,7 @@ class ProfileScreen extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 19.w),
                                 child: AppBottom(
                                   text: "Edit Profile",
-                                  boxShadow: [],
+                                  boxShadow: const [],
                                   icon: Icons.edit_outlined,
                                   onPressed: () async {
                                     await context
@@ -124,21 +135,22 @@ class ProfileScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Expanded(
-                                    child: const InfoCard(
-                                      number: '128',
+                                    child: InfoCard(
+                                      number:
+                                          '${user.totalScans ?? 0}', // ربط الإحصائيات إذا كانت موجودة بالموديل
                                       text: 'SCANS',
                                     ),
                                   ),
                                   12.horizontalSpace,
                                   Expanded(
-                                    child: const InfoCard(
-                                      number: "42",
+                                    child: InfoCard(
+                                      number: "${user.counterfeitScans ?? 0}",
                                       text: "BLOCKED",
                                     ),
                                   ),
                                   12.horizontalSpace,
-                                  Expanded(
-                                    child: const InfoCard(
+                                  const Expanded(
+                                    child: InfoCard(
                                       number: "15",
                                       text: "SAFE DAYS",
                                     ),
@@ -161,6 +173,23 @@ class ProfileScreen extends StatelessWidget {
                                       textAlign: TextAlign.start,
                                     ),
                                     16.verticalSpace,
+
+                                    // 👈 2. إظهار زر التقارير حصرياً للخبراء
+                                    if (isExpert) ...[
+                                      OptionsCard(
+                                        widget: const Icon(
+                                          Icons.fact_check_outlined,
+                                          color: Colors.purpleAccent,
+                                          size: 28,
+                                        ),
+                                        text: 'My Reports',
+                                        onTap: () {
+                                          context.pushNamed(Routes.myReports);
+                                        },
+                                      ),
+                                      22.verticalSpace,
+                                    ],
+
                                     OptionsCard(
                                       widget: SvgPicture.asset(
                                         "assets/svgs/shield.svg",
@@ -176,21 +205,22 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                     24.verticalSpace,
                                     AppBottom(
-                                      onPressed: () {
-                                        final pref = SharedPreferencesService();
-                                        pref.clearTokens();
-                                        context.pushNamedAndRemoveUntil(
-                                          Routes.logIn,
-                                        );
-                                      },
                                       text: "Log Out",
-                                      boxShadow: [],
+                                      boxShadow: const [],
                                       color: AppColor.red,
                                       textcolor: AppColor.red,
                                       backGroundColor: AppColor.red.withOpacity(
                                         0.1,
                                       ),
                                       icon: Icons.logout,
+                                      onPressed: () {
+                                        // 👈 مرة واحدة فقط، وتحتوي على الكود الصحيح
+                                        final pref = SharedPreferencesService();
+                                        pref.clearTokens();
+                                        context.pushNamedAndRemoveUntil(
+                                          Routes.logIn,
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),

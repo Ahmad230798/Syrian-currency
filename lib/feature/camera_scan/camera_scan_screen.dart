@@ -220,9 +220,13 @@ class _CameraScanScreenState extends State<CameraScanScreen>
             SnackBarHelper.showError(context, state.errorMessage);
           } else if (state is ScannerSuccess) {
             if (state.response.data != null) {
+              // 👈 التعديل هنا: نرسل الداتا والصلاحية معاً
               context.pushReplacementNamed(
                 Routes.scanResult,
-                arguments: state.response.data,
+                arguments: {
+                  'scanData': state.response.data,
+                  'isExpert': state.isExpert,
+                },
               );
             }
           }

@@ -14,16 +14,17 @@ class ScannerLoading extends ScannerState {}
 
 class ScannerSuccess extends ScannerState {
   final ScannerResponseModel response;
+  final bool isExpert; // 👈 أضفنا هذا المتغير
 
-  const ScannerSuccess(this.response);
+  // جعلنا القيمة الافتراضية false للحماية
+  const ScannerSuccess(this.response, {this.isExpert = false});
 
   @override
-  List<Object?> get props => [response];
+  List<Object?> get props => [response, isExpert];
 }
 
 class ScannerFailure extends ScannerState {
   final String errorMessage;
-
   const ScannerFailure(this.errorMessage);
 
   @override

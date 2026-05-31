@@ -7,6 +7,9 @@ import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/widgets/main_layout_screen.dart';
 import 'package:syrian_currency/feature/AI%20Explanation/ai_explanation_screen.dart';
 import 'package:syrian_currency/feature/about_project/about_project_screen.dart';
+import 'package:syrian_currency/feature/admin_dashboard/admin_layout_screen.dart';
+import 'package:syrian_currency/feature/admin_dashboard/logic/admin_cubit.dart';
+import 'package:syrian_currency/feature/admin_dashboard/repo/admin_repo.dart';
 import 'package:syrian_currency/feature/auth/logic/login/login_cubit.dart';
 import 'package:syrian_currency/feature/auth/logic/register/signup_cubit.dart';
 import 'package:syrian_currency/feature/auth/pages/login_screen.dart';
@@ -15,7 +18,6 @@ import 'package:syrian_currency/feature/auth/repo/login_repo.dart';
 import 'package:syrian_currency/feature/auth/repo/signup_repo.dart';
 import 'package:syrian_currency/feature/camera_scan/camera_scan_screen.dart';
 import 'package:syrian_currency/feature/camera_scan/logic/scanner_cubit.dart';
-import 'package:syrian_currency/feature/camera_scan/model/scanner_response_model.dart';
 import 'package:syrian_currency/feature/camera_scan/repo/scanner_repo.dart';
 import 'package:syrian_currency/feature/edite_profile/logic/edite_profile_cubit.dart';
 import 'package:syrian_currency/feature/edite_profile/repo/edit_profile_repo.dart';
@@ -23,11 +25,16 @@ import 'package:syrian_currency/feature/edite_profile/ui/edit_profile_screen.dar
 import 'package:syrian_currency/feature/home/logic/home_cubit.dart';
 import 'package:syrian_currency/feature/home/repo/home_repo.dart';
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
+import 'package:syrian_currency/feature/my_reports/logic/my_reports_cubit.dart';
+import 'package:syrian_currency/feature/my_reports/repo/my_reports_repo.dart';
+import 'package:syrian_currency/feature/my_reports/ui/my_reports_screen.dart';
 import 'package:syrian_currency/feature/onbording/page_cntroller.dart';
 import 'package:syrian_currency/feature/profile/logic/profile_cubit.dart';
 import 'package:syrian_currency/feature/profile/repo/profile_repo.dart';
 import 'package:syrian_currency/feature/profile/ui/profile_screen.dart';
 import 'package:syrian_currency/feature/scan_history/ui/scan_history_screen.dart';
+import 'package:syrian_currency/feature/scan_result/logic/feedback_cubit.dart';
+import 'package:syrian_currency/feature/scan_result/repo/feedback_repo.dart';
 import 'package:syrian_currency/feature/scan_result/ui/scan_result_screen.dart';
 import 'package:syrian_currency/feature/settings_screen/logic/setting_cubit.dart';
 import 'package:syrian_currency/feature/settings_screen/repo/setting_repo.dart';
@@ -71,10 +78,19 @@ class AppRoute {
           ),
         );
       case Routes.scanResult:
-        // استقبال الداتا الممررة من شاشة الكاميرا
-        final scanData = settings.arguments as ScanDataModel;
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
-          builder: (_) => ScanResultScreen(scanData: scanData),
+          builder: (_) => BlocProvider(
+            create: (context) => FeedbackCubit(
+              FeedbackRepo(
+                ApiServices(DioFactory.getDio()),
+              ), // تأكد من الـ Imports
+            ),
+            child: ScanResultScreen(
+              scanData: args['scanData'],
+              isExpert: args['isExpert'] ?? false,
+            ),
+          ),
         );
       case Routes.profile:
         return MaterialPageRoute(
@@ -85,6 +101,15 @@ class AppRoute {
             child: const ProfileScreen(isFromBottomNav: false),
           ),
         );
+      case Routes.myReports: // تأكد من إضافة myReports إلى ملف routes.dart
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                MyReportsCubit(MyReportsRepo(ApiServices(DioFactory.getDio())))
+                  ..fetchMyReports(),
+            child: const MyReportsScreen(),
+          ),
+        );
       case Routes.editProfile:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -92,6 +117,15 @@ class AppRoute {
               EditProfileRepo(ApiServices(DioFactory.getDio())),
             )..getProfileInfo(),
             child: EditProfileScreen(),
+          ),
+        );
+      case Routes.adminDashboard:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                AdminCubit(AdminRepo(ApiServices(DioFactory.getDio())))
+                  ..fetchAllAdminData(), // 👈 جلب كل البيانات فور فتح الشاشة
+            child: const AdminLayoutScreen(),
           ),
         );
       case Routes.aiExplanation:

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:syrian_currency/feature/auth/model/login_model/login_response_body.dart';
 
 class LoginState extends Equatable {
   const LoginState();
@@ -14,21 +13,24 @@ class LoginInit extends LoginState {
 class LoginLoading extends LoginState {
   const LoginLoading();
 }
+
 class LoginPasswordVisibilityChanged extends LoginState {
   final bool isObscure;
   const LoginPasswordVisibilityChanged(this.isObscure);
   @override
   List<Object?> get props => [isObscure];
 }
+
 class LoginSuccess extends LoginState {
-  final LoginResponseBody loginResponseBody;
-  const LoginSuccess(this.loginResponseBody);
+  final String role; // 👈 أضفنا الصلاحية هنا بدل الموديل القديم
+  const LoginSuccess(this.role);
   @override
-  List<Object?> get props => [loginResponseBody];
+  List<Object?> get props => [role];
 }
+
 class LoginFailure extends LoginState {
   final String errorMessage;
   const LoginFailure(this.errorMessage);
   @override
-  List<Object?>get props=>[errorMessage];
+  List<Object?> get props => [errorMessage];
 }

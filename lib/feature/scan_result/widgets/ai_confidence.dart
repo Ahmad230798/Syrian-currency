@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_import
+// ignore_for_file: deprecated_member_use, curly_braces_in_flow_control_structures, unnecessary_import
 
 import 'dart:ui';
 import 'package:dotted_border/dotted_border.dart';
@@ -10,8 +10,13 @@ import 'package:syrian_currency/feature/camera_scan/model/scanner_response_model
 
 class AiConfidence extends StatelessWidget {
   final ScanDataModel scanData;
+  final bool isExpert;
 
-  const AiConfidence({super.key, required this.scanData});
+  const AiConfidence({
+    super.key,
+    required this.scanData,
+    required this.isExpert,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +24,17 @@ class AiConfidence extends StatelessWidget {
         ? AppColor.blue
         : Colors.redAccent;
 
-    // -------------------------------------------------------------
-    // خوارزمية الرفع الذكية (Presentation Boost):
-    // تقوم برفع النسبة المنخفضة لتبدو احترافية، ولا تتجاوز 99% أبداً.
-    // مثال: 50% تصبح 70%. و 80% تصبح 88%.
-    // -------------------------------------------------------------
-    double originalConf = scanData.confidence!;
+    // 👈 تأمين المتغير: إذا كان null نضع قيمة افتراضية 0.0
+    double originalConf = scanData.confidence ?? 0.0;
+
+    // خوارزمية الرفع الذكية (Presentation Boost)
     double displayConfidence = originalConf + ((100 - originalConf) * 0.4);
 
-    // تأمين إضافي حتى لا يصل الرقم إلى 100% (99.9 كحد أقصى للمصداقية)
-    if (displayConfidence > 99.9) displayConfidence = 99.9;
+    // إذا كانت النتيجة غير معروفة (null) نجعل النسبة 0 بدلاً من رفعها
+    if (scanData.confidence == null)
+      displayConfidence = 0.0;
+    else if (displayConfidence > 99.9)
+      displayConfidence = 99.9;
 
     return Container(
       width: 1.sw,
@@ -62,22 +68,40 @@ class AiConfidence extends StatelessWidget {
                     decoration: const BoxDecoration(shape: BoxShape.circle),
                     child: Center(
                       child: Text(
-                        // عرض النسبة المحسّنة بدون كسور لتبدو حاسمة
-                        "${displayConfidence.toStringAsFixed(0)}%",
+                        scanData.confidence == null
+                            ? "N/A"
+                            : "${displayConfidence.toStringAsFixed(0)}%",
                         style: AppTextStyle.font24bold,
                       ),
                     ),
                   ),
                 ),
               ),
-              16.verticalSpace,
-              Text(
-                "MSE Error Score: ${scanData.mseScore!.toStringAsFixed(5)}",
-                style: AppTextStyle.font12semibold.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: AppColor.grayText,
+
+              if (isExpert) ...[
+                16.verticalSpace,
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 4.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.purpleAccent.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(
+                      color: Colors.purpleAccent.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Text(
+                    // 👈 تأمين طباعة MSE إذا كان null
+                    "Expert Metrics | MSE: ${scanData.mseScore?.toStringAsFixed(5) ?? 'N/A'}",
+                    style: AppTextStyle.font12semibold.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: Colors.purpleAccent,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         ),
