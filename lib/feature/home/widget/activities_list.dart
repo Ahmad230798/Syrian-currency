@@ -10,10 +10,11 @@ import 'package:syrian_currency/feature/home/widget/activity_card.dart';
 class ActivitiesList extends StatelessWidget {
   final List<ScanDataModel> scanHistory;
   final HomeCubit cubit;
+  final bool isMore;
   const ActivitiesList({
     super.key,
     required this.scanHistory,
-    required this.cubit,
+    required this.cubit, required this.isMore,
   });
 
   @override

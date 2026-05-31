@@ -38,10 +38,11 @@ final class ScannerFailure extends HomeState {
 }
 
 final class HomeSuccess extends HomeState {
+  final bool isMore;
   final List<ScanDataModel> historyList;
-  const HomeSuccess(this.historyList);
+  const HomeSuccess(this.historyList, {this.isMore = false});
   @override
-  List<Object> get props => [historyList];
+  List<Object> get props => [historyList, isMore];
 }
 
 class ScannerSuccess extends HomeState {

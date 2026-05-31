@@ -230,6 +230,7 @@ class _HomeScreeenState extends State<HomeScreeen> {
                             ActivitiesList(
                               scanHistory: scanHistory,
                               cubit: cubit,
+                              isMore: state.isMore,
                             ),
                           ],
                         ),

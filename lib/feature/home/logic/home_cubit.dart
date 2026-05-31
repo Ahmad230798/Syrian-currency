@@ -15,9 +15,15 @@ class HomeCubit extends Cubit<HomeState> {
   final ImagePicker _picker = ImagePicker();
   HomeCubit(HomeRepo repo) : _repo = repo, super(HomeInitial());
   void toggleMoreState() {
-    more = !more;
     if (state is HomeSuccess) {
-      emit(HomeSuccess((state as HomeSuccess).historyList));
+      final currentState = state as HomeSuccess;
+      // 🌟 3. نرسل الحالة مع عكس قيمة isMore الحالية
+      emit(
+        HomeSuccess(
+          currentState.historyList,
+          isMore: !currentState.isMore, // عكس القيمة السابقة
+        ),
+      );
     }
   }
 
