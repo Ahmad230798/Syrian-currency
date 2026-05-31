@@ -14,7 +14,8 @@ class ActivitiesList extends StatelessWidget {
   const ActivitiesList({
     super.key,
     required this.scanHistory,
-    required this.cubit, required this.isMore,
+    required this.cubit,
+    required this.isMore,
   });
 
   @override
@@ -28,9 +29,10 @@ class ActivitiesList extends StatelessWidget {
             if (scanHistory.length > 3)
               InkWell(
                 onTap: cubit.toggleMoreState,
+
                 child: Text(
                   // 🌟 تغيير النص ديناميكياً بناءً على الحالة
-                  cubit.more ? "Show Less" : "View All",
+                  isMore ? "Show Less" : "View All",
                   style: AppTextStyle.font12semibold,
                 ),
               ),
@@ -38,9 +40,7 @@ class ActivitiesList extends StatelessWidget {
         ),
         SizedBox(height: 16.h),
         ListView.builder(
-          itemCount: cubit.more
-              ? scanHistory.length
-              : min(scanHistory.length, 3),
+          itemCount: isMore ? scanHistory.length : min(scanHistory.length, 3),
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {

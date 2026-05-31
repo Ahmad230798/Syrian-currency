@@ -17,6 +17,7 @@ class HomeCubit extends Cubit<HomeState> {
   void toggleMoreState() {
     if (state is HomeSuccess) {
       final currentState = state as HomeSuccess;
+      print("//////////////////////");
       // 🌟 3. نرسل الحالة مع عكس قيمة isMore الحالية
       emit(
         HomeSuccess(
