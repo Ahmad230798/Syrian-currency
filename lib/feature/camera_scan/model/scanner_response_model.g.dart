@@ -33,7 +33,7 @@ ScanDataModel _$ScanDataModelFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String,
       result: json['result'] as String,
       mseScore: (json['mse_score'] as num?)?.toDouble(),
-      threshold: (json['threshold'] as num?)?.toDouble(),
+      threshold: (json['threshold'] as num).toDouble(),
       confidence: (json['confidence'] as num?)?.toDouble(),
       isGenuine: json['is_genuine'] as bool,
       notes: json['notes'] as String?,

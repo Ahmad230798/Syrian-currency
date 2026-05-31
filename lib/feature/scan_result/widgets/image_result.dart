@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/core/networking/api_constants.dart';
 import 'package:syrian_currency/feature/camera_scan/model/scanner_response_model.dart';
 
 class ImageResult extends StatelessWidget {
@@ -14,11 +15,14 @@ class ImageResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // بناء رابط الصورة (بدل الـ IP ضع الـ baseUrl الخاص بك إذا تغير)
-    const String baseUrl = "http://192.168.1.14:8000";
-    final String imageUrl = scanData.heatmap != null
-        ? "$baseUrl${scanData.heatmap}"
-        : "$baseUrl${scanData.image}";
+    // 1. الأولوية لـ heatmapUrl، ثم heatmap، وإذا لم يوجدا نعرض الصورة الأصلية image
+    String rawPath = scanData.heatmapUrl ?? scanData.heatmap ?? scanData.image;
+
+    // 2. معالجة الرابط بذكاء (لتجنب تكرار http://)
+    const String baseUrl = ApiConstants.baseUrl; // تأكد من هذا الـ IP حسب شبكتك
+    final String imageUrl = rawPath.startsWith('http')
+        ? rawPath
+        : "$baseUrl$rawPath";
 
     return Container(
       decoration: BoxDecoration(

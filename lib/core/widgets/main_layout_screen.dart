@@ -14,11 +14,18 @@ import 'package:syrian_currency/core/networking/dio_factory.dart';
 import 'package:syrian_currency/feature/home/logic/home_cubit.dart';
 import 'package:syrian_currency/feature/home/repo/home_repo.dart';
 
-// استدعاء شاشاتك الفعلية
 import 'package:syrian_currency/feature/home/ui/home_screeen.dart';
+
+// 👈 استدعاءات شاشة المستخدم العادي (History)
 import 'package:syrian_currency/feature/scan_history/logic/scan_history_cubit.dart';
 import 'package:syrian_currency/feature/scan_history/repo/scan_history_repo.dart';
 import 'package:syrian_currency/feature/scan_history/ui/scan_history_screen.dart';
+
+// 👈 استدعاءات شاشة الخبير (Expert Feed)
+import 'package:syrian_currency/feature/expert_feed/logic/expert_feed_cubit.dart';
+import 'package:syrian_currency/feature/expert_feed/repo/expert_feed_repo.dart';
+import 'package:syrian_currency/feature/expert_feed/ui/expert_feed_screen.dart';
+
 import 'package:syrian_currency/feature/profile/logic/profile_cubit.dart';
 import 'package:syrian_currency/feature/profile/repo/profile_repo.dart';
 import 'package:syrian_currency/feature/profile/ui/profile_screen.dart';
@@ -35,11 +42,21 @@ class MainLayoutScreen extends StatefulWidget {
 
 class _MainLayoutScreenState extends State<MainLayoutScreen> {
   int _currentIndex = 0;
-  late List<Widget> _screens;
+  List<Widget> _screens = [];
+  bool _isLoading = true; // 👈 متغير لانتظار تحميل الصلاحية
+  String _userRole = 'user'; // 👈 متغير لحفظ الصلاحية
 
   @override
   void initState() {
     super.initState();
+    _loadUserRoleAndScreens();
+  }
+
+  // 👈 دالة لجلب الصلاحية وبناء قائمة الشاشات ديناميكياً
+  Future<void> _loadUserRoleAndScreens() async {
+    final SharedPreferencesService prefService = SharedPreferencesService();
+    _userRole = await prefService.getUserRole();
+
     _screens = [
       BlocProvider(
         create: (context) => HomeCubit(
@@ -51,13 +68,20 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
         child: const HomeScreeen(),
       ),
 
-      // 👈 تم التعديل هنا لربط الـ Cubit
-      BlocProvider(
-        create: (context) =>
-            ScanHistoryCubit(ScanHistoryRepo(ApiServices(DioFactory.getDio())))
-              ..fetchHistory(), // يتم استدعاء البيانات فور بناء الشاشة
-        child: const ScanHistoryScreen(isFromBottomNav: true),
-      ),
+      // 🧠 الشرط الذكي: إذا كان خبيراً نضع شاشة הـ Feed، وإلا نضع الـ History
+      (_userRole == 'expert' || _userRole == 'admin')
+          ? BlocProvider(
+              create: (context) => ExpertFeedCubit(
+                ExpertFeedRepo(ApiServices(DioFactory.getDio())),
+              )..fetchFeed(),
+              child: const ExpertFeedScreen(isFromBottomNav: true),
+            )
+          : BlocProvider(
+              create: (context) => ScanHistoryCubit(
+                ScanHistoryRepo(ApiServices(DioFactory.getDio())),
+              )..fetchHistory(),
+              child: const ScanHistoryScreen(isFromBottomNav: true),
+            ),
 
       BlocProvider(
         create: (context) =>
@@ -72,32 +96,36 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
         child: const SettingsScreen(isFromBottomNav: true),
       ),
     ];
+
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    // إظهار شاشة تحميل سريعة جداً ريثما يتم قراءة الصلاحية
+    if (_isLoading) {
+      return const Scaffold(
+        backgroundColor: Color.fromRGBO(15, 20, 30, 1),
+        body: Center(child: CircularProgressIndicator(color: AppColor.blue)),
+      );
+    }
+
     return PopScope(
-      canPop: _currentIndex == 0, // السماح بالرجوع فقط من الشاشة الرئيسية
+      canPop: _currentIndex == 0,
       onPopInvoked: (didPop) {
-        if (didPop) {
-          return;
-        }
+        if (didPop) return;
         setState(() {
           _currentIndex = 0;
         });
       },
       child: Scaffold(
-        extendBody: true, // ضروري لجعل الشاشة تمتد خلف الـ BottomNavBar
-        backgroundColor: const Color.fromRGBO(
-          15,
-          20,
-          30,
-          1,
-        ), // لون الخلفية العام
-        // استخدام IndexedStack للحفاظ على حالة الشاشات عند التنقل
+        extendBody: true,
+        backgroundColor: const Color.fromRGBO(15, 20, 30, 1),
         body: IndexedStack(index: _currentIndex, children: _screens),
-
-        // 1. الزر العائم في المنتصف (الكاميرا)
         floatingActionButton: Container(
           height: 64.w,
           width: 64.w,
@@ -113,7 +141,6 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
           ),
           child: FloatingActionButton(
             onPressed: () {
-              // الانتقال إلى شاشة الكاميرا دون تغيير الـ Index الأساسي
               context.pushNamed(Routes.cameraScan);
             },
             backgroundColor: AppColor.blue,
@@ -127,19 +154,16 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-        // 2. الشريط السفلي المخصص
         bottomNavigationBar: BottomAppBar(
           color: const Color.fromRGBO(23, 30, 41, 0.95),
           shape: const CircularNotchedRectangle(),
-          notchMargin: 8.h, // مساحة الفراغ حول الزر العائم
+          notchMargin: 8.h,
           elevation: 10,
           child: SizedBox(
-            height: 85.h, // تم زيادة الارتفاع لحل مشكلة التجاوز (Overflow)
+            height: 85.h,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // القسم الأيمن (Home - History)
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -150,20 +174,24 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                         label: 'Home',
                         index: 0,
                       ),
+                      // 🧠 تغيير الأيقونة والاسم بناءً على الصلاحية
                       _buildNavItem(
-                        icon: Icons.history_outlined,
-                        activeIcon: Icons.history,
-                        label: 'History',
+                        icon: (_userRole == 'expert' || _userRole == 'admin')
+                            ? Icons.dynamic_feed_outlined
+                            : Icons.history_outlined,
+                        activeIcon:
+                            (_userRole == 'expert' || _userRole == 'admin')
+                            ? Icons.dynamic_feed
+                            : Icons.history,
+                        label: (_userRole == 'expert' || _userRole == 'admin')
+                            ? 'Audit Feed'
+                            : 'History',
                         index: 1,
                       ),
                     ],
                   ),
                 ),
-
-                // مساحة فارغة في المنتصف للزر العائم
                 SizedBox(width: 48.w),
-
-                // القسم الأيسر (Profile - Settings)
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -191,7 +219,6 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
     );
   }
 
-  // ويدجت مساعدة لبناء أيقونات الـ Navigation Bar بشكل ديناميكي
   Widget _buildNavItem({
     required IconData icon,
     required IconData activeIcon,
@@ -208,10 +235,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 2.h, // تم تقليل المساحة الرأسية لحل مشكلة التجاوز
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,

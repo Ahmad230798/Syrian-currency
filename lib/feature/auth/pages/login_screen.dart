@@ -50,7 +50,6 @@ class LoginScreen extends StatelessWidget {
                         filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
                         child: Container(
                           width: 1.sw,
-
                           color: AppColor.blureColor.withOpacity(0.4),
                           child: Padding(
                             padding: EdgeInsets.symmetric(
@@ -64,17 +63,27 @@ class LoginScreen extends StatelessWidget {
                                   "Welcome Back",
                                   style: AppTextStyle.font24bold,
                                 ),
-                                SizedBox(height: 32),
+                                const SizedBox(height: 32),
+
+                                // التعديل هنا: BlocConsumer يحتوي على listener و builder معاً
                                 BlocConsumer<LoginCubit, LoginState>(
                                   listener: (context, state) {
                                     if (state is LoginSuccess) {
                                       SnackBarHelper.showSuccess(
                                         context,
-                                        "login successfully",
+                                        "Login successfully",
                                       );
-                                      context.pushNamedAndRemoveUntil(
-                                        Routes.mainLayout,
-                                      );
+
+                                      // التوجيه بناءً على الصلاحية
+                                      if (state.role == 'admin') {
+                                        context.pushNamedAndRemoveUntil(
+                                          Routes.adminDashboard,
+                                        );
+                                      } else {
+                                        context.pushNamedAndRemoveUntil(
+                                          Routes.mainLayout,
+                                        );
+                                      }
                                     }
                                     if (state is LoginFailure) {
                                       SnackBarHelper.showError(

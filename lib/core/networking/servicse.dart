@@ -48,4 +48,16 @@ class SharedPreferencesService {
     }
     return deviceId;
   }
+
+  // حفظ صلاحية المستخدم
+  Future<void> saveUserRole(String role) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_role', role);
+  }
+
+  // جلب صلاحية المستخدم
+  Future<String> getUserRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_role') ?? 'user'; // الافتراضي user
+  }
 }

@@ -89,6 +89,27 @@ class ApiServices {
       throw ServerFailure.fromDioError(e);
     }
   }
+
+  /// DELETE
+  Future deleteData({
+    required String url,
+    Map<String, dynamic>? body,
+    Map<String, String>? headers,
+  }) async {
+    try {
+      final finalHeaders = {...?headers};
+
+      final response = await _dio.delete(
+        url,
+        data: body,
+        options: Options(headers: finalHeaders),
+      );
+
+      return _handleResponse(response);
+    } on DioException catch (e) {
+      throw ServerFailure.fromDioError(e);
+    }
+  }
 }
 
 dynamic _handleResponse(Response response) {
