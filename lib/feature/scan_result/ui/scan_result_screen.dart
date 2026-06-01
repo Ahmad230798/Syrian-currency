@@ -263,7 +263,11 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ImageResult(scanData: widget.scanData),
+                      // 👈 تمرير الـ isExpert للويدجت هنا!
+                      ImageResult(
+                        scanData: widget.scanData,
+                        isExpert: widget.isExpert,
+                      ),
                       24.verticalSpace,
                       Authenticity(scanData: widget.scanData),
                       16.verticalSpace,
@@ -341,7 +345,6 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
                     ),
                   ),
                   onPressed: () {
-                    // 👈 استدعاء النافذة المنبثقة من هنا!
                     _showReportDialog(context, widget.scanData.id);
                   },
                   icon: const Icon(Icons.report_problem_outlined, size: 20),
@@ -366,7 +369,7 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
                     ),
                   ),
                   onPressed: () {
-                    // TODO:
+                    // TODO: Export Data
                     print("تصدير التقرير");
                   },
                   icon: const Icon(Icons.download, size: 20),

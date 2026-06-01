@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/feature/admin_dashboard/tabs/admin_dashboard_tab.dart';
+import 'package:syrian_currency/feature/admin_dashboard/tabs/admin_settings_tab.dart';
 
 import 'tabs/admin_users_tab.dart';
 import 'tabs/admin_scan_history_tab.dart';
@@ -21,16 +23,12 @@ class _AdminLayoutScreenState extends State<AdminLayoutScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _tabs = [
-    const Center(
-      child: Text("Dashboard Overview", style: TextStyle(color: Colors.white)),
-    ),
+    const AdminDashboardTab(),
     const AdminUsersTab(),
     const AdminScanHistoryTab(),
     const AdminAiFeedbackTab(),
     const AdminPoliciesTab(),
-    const Center(
-      child: Text("Settings", style: TextStyle(color: Colors.white)),
-    ),
+    const AdminSettingsTab(),
   ];
 
   @override

@@ -10,6 +10,7 @@ import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 import 'package:syrian_currency/core/helper/navigation.dart';
 import 'package:syrian_currency/core/helper/snack_bar_helper.dart';
+import 'package:syrian_currency/core/networking/servicse.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/feature/auth/logic/login/login_cubit.dart';
 import 'package:syrian_currency/feature/auth/logic/login/login_state.dart';
@@ -64,8 +65,6 @@ class LoginScreen extends StatelessWidget {
                                   style: AppTextStyle.font24bold,
                                 ),
                                 const SizedBox(height: 32),
-
-                                // التعديل هنا: BlocConsumer يحتوي على listener و builder معاً
                                 BlocConsumer<LoginCubit, LoginState>(
                                   listener: (context, state) {
                                     if (state is LoginSuccess) {
@@ -74,7 +73,6 @@ class LoginScreen extends StatelessWidget {
                                         "Login successfully",
                                       );
 
-                                      // التوجيه بناءً على الصلاحية
                                       if (state.role == 'admin') {
                                         context.pushNamedAndRemoveUntil(
                                           Routes.adminDashboard,
@@ -119,7 +117,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         InkWell(
                           child: Text(
-                            "Create an account",
+                            " Create an account",
                             style: AppTextStyle.font16medium.copyWith(
                               fontWeight: FontWeight.w400,
                               color: AppColor.blue,
@@ -129,6 +127,30 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(height: 24.h),
+                    // 👈 زر الدخول كزائر
+                    TextButton(
+                      onPressed: () async {
+                        final pref = SharedPreferencesService();
+                        await pref.clearTokens(); // مسح أي بيانات سابقة
+                        await pref.saveUserRole(
+                          'guest',
+                        ); // تعيين الصلاحية كزائر
+
+                        if (context.mounted) {
+                          context.pushNamedAndRemoveUntil(Routes.mainLayout);
+                        }
+                      },
+                      child: Text(
+                        "Continue as Guest",
+                        style: AppTextStyle.font16medium.copyWith(
+                          color: AppColor.grayText,
+                          decoration: TextDecoration.underline,
+                          decorationColor: AppColor.grayText,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 24.h),
                   ],
                 ),
               ),
