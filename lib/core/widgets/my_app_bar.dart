@@ -69,7 +69,7 @@ class MyAppBar extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
-                            icon ?? Icons.notifications,
+                            icon ?? Icons.shield_outlined,
                             color: Colors.white,
                           ),
                         ),

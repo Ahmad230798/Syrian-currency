@@ -10,16 +10,22 @@ import 'package:syrian_currency/feature/camera_scan/model/scanner_response_model
 
 class ImageResult extends StatelessWidget {
   final ScanDataModel scanData;
+  final bool isExpert; // 👈 1. أضفنا متغير الصلاحية هنا
 
-  const ImageResult({super.key, required this.scanData});
+  const ImageResult({super.key, required this.scanData, this.isExpert = false});
 
   @override
   Widget build(BuildContext context) {
-    // 1. الأولوية لـ heatmapUrl، ثم heatmap، وإذا لم يوجدا نعرض الصورة الأصلية image
-    String rawPath = scanData.heatmapUrl ?? scanData.heatmap ?? scanData.image;
+    // 👈 2. الشرط الذكي: الخبير يرى الـ Heatmap (إن وجد)، والمستخدم العادي يرى الصورة الأصلية فقط!
+    String rawPath;
+    if (isExpert) {
+      rawPath = scanData.heatmapUrl ?? scanData.heatmap ?? scanData.image;
+    } else {
+      rawPath = scanData.image; // يوزر عادي: يعرض صورته الأصلية فقط
+    }
 
-    // 2. معالجة الرابط بذكاء (لتجنب تكرار http://)
-    const String baseUrl = ApiConstants.baseUrl; // تأكد من هذا الـ IP حسب شبكتك
+    // 3. معالجة الرابط بذكاء
+    const String baseUrl = ApiConstants.baseUrl;
     final String imageUrl = rawPath.startsWith('http')
         ? rawPath
         : "$baseUrl$rawPath";
