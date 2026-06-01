@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int number = 0;
+    // تم إزالة متغير number المؤقت من هنا
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -66,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
 
                         if (state is ProfileSuccess) {
                           final user = state.user;
-                          // 👈 1. تحديد هل المستخدم خبير لمعرفة كيفية عرض الواجهة
+                          // 👈 تحديد هل المستخدم خبير لمعرفة كيفية عرض الواجهة
                           final bool isExpert =
                               user.role == 'expert' || user.role == 'admin';
                           final Color badgeColor = isExpert
@@ -95,11 +95,10 @@ class ProfileScreen extends StatelessWidget {
                                 children: [
                                   Icon(
                                     Icons.shield_outlined,
-                                    color:
-                                        badgeColor, // 👈 استخدام اللون الديناميكي
+                                    color: badgeColor,
                                   ),
                                   Text(
-                                    badgeText, // 👈 استخدام النص الديناميكي
+                                    badgeText,
                                     style: AppTextStyle.font14regular.copyWith(
                                       color: badgeColor,
                                       fontWeight: FontWeight.w600,
@@ -133,35 +132,33 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                               ),
                               24.verticalSpace,
+
+                              // 🌟 التعديل هنا: عرض الإحصائيات الصحيحة 100%
                               Row(
                                 children: [
                                   Expanded(
                                     child: InfoCard(
-                                      number:
-                                          '${user.totalScans ?? 0}', // ربط الإحصائيات إذا كانت موجودة بالموديل
-                                      text: 'SCANS',
+                                      number: '${user.totalScans ?? 0}',
+                                      text: 'TOTAL SCANS',
+                                    ),
+                                  ),
+                                  12.horizontalSpace,
+                                  Expanded(
+                                    child: InfoCard(
+                                      number: "${user.genuineScans ?? 0}",
+                                      text: "GENUINE",
                                     ),
                                   ),
                                   12.horizontalSpace,
                                   Expanded(
                                     child: InfoCard(
                                       number: "${user.counterfeitScans ?? 0}",
-                                      text: "BLOCKED",
-                                    ),
-                                  ),
-                                  12.horizontalSpace,
-                                  Expanded(
-                                    child: InfoCard(
-                                      number:
-                                          (user.counterfeitScans == 0
-                                                  ? number += 1
-                                                  : 0)
-                                              .toString(),
-                                      text: "SAFE DAYS",
+                                      text: "COUNTERFEIT",
                                     ),
                                   ),
                                 ],
                               ),
+
                               8.verticalSpace,
                               Align(
                                 alignment: AlignmentGeometry.centerLeft,
@@ -179,7 +176,6 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                     16.verticalSpace,
 
-                                    // 👈 2. إظهار زر التقارير حصرياً للخبراء
                                     if (isExpert) ...[
                                       OptionsCard(
                                         widget: const Icon(
@@ -219,7 +215,6 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       icon: Icons.logout,
                                       onPressed: () {
-                                        // 👈 مرة واحدة فقط، وتحتوي على الكود الصحيح
                                         final pref = SharedPreferencesService();
                                         pref.clearTokens();
                                         context.pushNamedAndRemoveUntil(

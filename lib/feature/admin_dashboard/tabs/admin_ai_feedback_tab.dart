@@ -31,8 +31,8 @@ class AdminAiFeedbackTab extends StatelessWidget {
               .where((f) => f.status == 'reviewed')
               .length;
           int resolvedCount = state.feedbacks
-              .where((f) => f.status == 'resolved')
-              .length; // إذا كان هناك حالة rejected/resolved
+              .where((f) => f.status == 'resolved' || f.status == 'rejected')
+              .length;
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
@@ -53,6 +53,7 @@ class AdminAiFeedbackTab extends StatelessWidget {
                           "Review and resolve expert escalations and system anomalies.",
                           style: AppTextStyle.font14regular.copyWith(
                             fontSize: 14,
+                            color: AppColor.grayText,
                           ),
                         ),
                       ],
@@ -60,20 +61,31 @@ class AdminAiFeedbackTab extends StatelessWidget {
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.mainContainerBackGround,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 18,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         side: BorderSide(color: Colors.white.withOpacity(0.1)),
                       ),
-                      icon: const Icon(Icons.download, color: AppColor.blue),
+                      icon: const Icon(
+                        Icons.download,
+                        color: AppColor.blue,
+                        size: 20,
+                      ),
                       label: Text(
                         "Export CSV",
                         style: AppTextStyle.font14regular.copyWith(
                           color: AppColor.blue,
                           fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        // TODO: برمجة التصدير لاحقاً
+                      },
                     ),
                   ],
                 ),
@@ -95,7 +107,7 @@ class AdminAiFeedbackTab extends StatelessWidget {
                     ),
                     const SizedBox(width: 16.0),
                     _buildStatCard(
-                      "Resolved/Rejected",
+                      "Resolved / Rejected",
                       "$resolvedCount",
                       Icons.task_alt,
                       AppColor.green,
@@ -103,6 +115,8 @@ class AdminAiFeedbackTab extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 32.0),
+
+                // 🌟 حاوية الجدول مع الإصلاح الشامل للتمدد
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -110,95 +124,111 @@ class AdminAiFeedbackTab extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16.0),
                     border: Border.all(color: Colors.white.withOpacity(0.05)),
                   ),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: state.feedbacks.isEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.all(32.0),
-                            child: Text(
-                              "No feedback reports submitted yet.",
-                              style: AppTextStyle.font14regular.copyWith(
-                                color: AppColor.grayText,
-                              ),
-                            ),
-                          )
-                        : DataTable(
-                            headingRowColor: MaterialStateProperty.all(
-                              Colors.white.withOpacity(0.02),
-                            ),
-                            dataRowHeight: 70.0,
-                            columns: [
-                              DataColumn(
-                                label: Text(
-                                  "REPORT ID & DATE",
-                                  style: AppTextStyle.font10bold.copyWith(
-                                    color: AppColor.grayText,
-                                    fontSize: 10,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16.0),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: ConstrainedBox(
+                        // 🌟 إجبار الجدول على التمدد ليملأ الشاشة بدلاً من الانكماش
+                        constraints: BoxConstraints(
+                          minWidth: MediaQuery.of(context).size.width - 320,
+                        ),
+                        child: state.feedbacks.isEmpty
+                            ? Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(40.0),
+                                  child: Text(
+                                    "No feedback reports submitted yet.",
+                                    style: AppTextStyle.font14regular.copyWith(
+                                      color: AppColor.grayText,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "EXPERT NAME",
-                                  style: AppTextStyle.font10bold.copyWith(
-                                    color: AppColor.grayText,
-                                    fontSize: 10,
-                                  ),
+                              )
+                            : DataTable(
+                                headingRowColor: WidgetStateProperty.all(
+                                  Colors.white.withOpacity(0.02),
                                 ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "SCAN VERDICT",
-                                  style: AppTextStyle.font10bold.copyWith(
-                                    color: AppColor.grayText,
-                                    fontSize: 10,
+                                dataRowMaxHeight: 75.0, // توحيد الارتفاع
+                                dataRowMinHeight: 75.0,
+                                dividerThickness: 0.5,
+                                columnSpacing:
+                                    60.0, // 🌟 زيادة المسافة بين الأعمدة ليتوزع المحتوى بشكل أنيق
+                                columns: [
+                                  DataColumn(
+                                    label: Text(
+                                      "REPORT ID & DATE",
+                                      style: AppTextStyle.font10bold.copyWith(
+                                        color: AppColor.grayText,
+                                        fontSize: 10,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "STATUS",
-                                  style: AppTextStyle.font10bold.copyWith(
-                                    color: AppColor.grayText,
-                                    fontSize: 10,
+                                  DataColumn(
+                                    label: Text(
+                                      "EXPERT NAME",
+                                      style: AppTextStyle.font10bold.copyWith(
+                                        color: AppColor.grayText,
+                                        fontSize: 10,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "ACTION",
-                                  style: AppTextStyle.font10bold.copyWith(
-                                    color: AppColor.grayText,
-                                    fontSize: 10,
+                                  DataColumn(
+                                    label: Text(
+                                      "SCAN VERDICT",
+                                      style: AppTextStyle.font10bold.copyWith(
+                                        color: AppColor.grayText,
+                                        fontSize: 10,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ],
-                            // إنشاء الصفوف برمجياً
-                            rows: state.feedbacks.map((f) {
-                              Color verdictColor =
-                                  f.scanResult.toLowerCase() == 'genuine'
-                                  ? AppColor.green
-                                  : Colors.redAccent;
-                              Color statusColor = f.status == 'pending'
-                                  ? Colors.amber
-                                  : (f.status == 'reviewed'
-                                        ? AppColor.blue
-                                        : AppColor.green);
+                                  DataColumn(
+                                    label: Text(
+                                      "STATUS",
+                                      style: AppTextStyle.font10bold.copyWith(
+                                        color: AppColor.grayText,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Text(
+                                      "ACTION",
+                                      style: AppTextStyle.font10bold.copyWith(
+                                        color: AppColor.grayText,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                rows: state.feedbacks.map((f) {
+                                  Color verdictColor =
+                                      f.scanResult.toLowerCase() == 'genuine'
+                                      ? AppColor.green
+                                      : Colors.redAccent;
 
-                              return _buildFeedbackRow(
-                                "#F-${f.id}",
-                                f.createdAt.substring(0, 10), // أخذ التاريخ فقط
-                                f.expertName,
-                                f.scanResult,
-                                f.status,
-                                verdictColor,
-                                statusColor,
-                              );
-                            }).toList(),
-                          ),
+                                  Color statusColor = f.status == 'pending'
+                                      ? Colors.amber
+                                      : (f.status == 'reviewed'
+                                            ? AppColor.blue
+                                            : AppColor.green);
+
+                                  return _buildFeedbackRow(
+                                    "#F-${f.id}",
+                                    f.createdAt.substring(0, 10),
+                                    f.expertName,
+                                    f.scanResult,
+                                    f.status,
+                                    verdictColor,
+                                    statusColor,
+                                  );
+                                }).toList(),
+                              ),
+                      ),
+                    ),
                   ),
                 ),
+                const SizedBox(height: 50.0), // مساحة للتنفس بالأسفل
               ],
             ),
           );
@@ -226,19 +256,23 @@ class AdminAiFeedbackTab extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: Icon(icon, color: color),
+              child: Icon(icon, color: color, size: 24),
             ),
             const SizedBox(height: 16.0),
             Text(
               title,
-              style: AppTextStyle.font14regular.copyWith(fontSize: 14),
+              style: AppTextStyle.font14regular.copyWith(
+                color: AppColor.grayText,
+                fontSize: 14,
+              ),
             ),
-            Text(value, style: AppTextStyle.font24bold.copyWith(fontSize: 24)),
+            const SizedBox(height: 4.0),
+            Text(value, style: AppTextStyle.font24bold.copyWith(fontSize: 28)),
           ],
         ),
       ),
@@ -269,6 +303,7 @@ class AdminAiFeedbackTab extends StatelessWidget {
                   fontSize: 14,
                 ),
               ),
+              const SizedBox(height: 4.0),
               Text(
                 date,
                 style: AppTextStyle.font12semibold.copyWith(
@@ -280,20 +315,42 @@ class AdminAiFeedbackTab extends StatelessWidget {
           ),
         ),
         DataCell(
-          Text(
-            name,
-            style: AppTextStyle.font14regular.copyWith(
-              color: Colors.white,
-              fontSize: 14,
-            ),
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 14,
+                backgroundColor: Colors.purpleAccent.withOpacity(0.2),
+                child: Text(
+                  name.substring(0, 1).toUpperCase(),
+                  style: const TextStyle(
+                    color: Colors.purpleAccent,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12.0),
+              Text(
+                name,
+                style: AppTextStyle.font14regular.copyWith(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
         ),
         DataCell(
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 6.0,
+            ),
             decoration: BoxDecoration(
               color: verdictColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(4.0),
+              borderRadius: BorderRadius.circular(6.0),
+              border: Border.all(color: verdictColor.withOpacity(0.3)),
             ),
             child: Text(
               verdict.toUpperCase(),
@@ -306,10 +363,14 @@ class AdminAiFeedbackTab extends StatelessWidget {
         ),
         DataCell(
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 6.0,
+            ),
             decoration: BoxDecoration(
               color: statusColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16.0),
+              borderRadius: BorderRadius.circular(6.0),
+              border: Border.all(color: statusColor.withOpacity(0.3)),
             ),
             child: Text(
               status.toUpperCase(),
@@ -321,14 +382,22 @@ class AdminAiFeedbackTab extends StatelessWidget {
           ),
         ),
         DataCell(
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.blue.withOpacity(0.2),
-              elevation: 0,
+          TextButton(
+            onPressed: () {
+              // TODO: برمجة عرض تفاصيل التقرير للإدمن لاحقاً
+            },
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              backgroundColor: AppColor.blue.withOpacity(0.1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
             ),
-            onPressed: () {},
             child: Text(
-              "View",
+              "View Details",
               style: AppTextStyle.font12semibold.copyWith(
                 color: AppColor.blue,
                 fontSize: 12,

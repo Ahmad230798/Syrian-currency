@@ -28,8 +28,7 @@ class SettingsScreen extends StatelessWidget {
             children: [
               MyAppBar(
                 title: "Settings",
-                icon: Icons.settings,
-                suffixsIcon: isFromBottomNav ? SizedBox() : null,
+                suffixsIcon: isFromBottomNav ? const SizedBox() : null,
                 onBackTap: () {
                   context.pop();
                 },
@@ -38,12 +37,12 @@ class SettingsScreen extends StatelessWidget {
                 child: BlocBuilder<SettingCubit, SettingState>(
                   builder: (context, state) {
                     if (state is SettingLoadingState) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                     if (state is SettingFailureState) {
                       return Center(
                         child: Text(
-                          "Somthing Went Wrong",
+                          "Something Went Wrong",
                           style: AppTextStyle.font14regular.copyWith(
                             color: AppColor.red,
                           ),
@@ -58,7 +57,10 @@ class SettingsScreen extends StatelessWidget {
                           children: [
                             38.verticalSpace,
                             ProfileImageHolder(
-                              imagePath: user.avatar!,
+                              // 👈 الحل هنا: استخدام صورة افتراضية بدلاً من علامة !
+                              imagePath:
+                                  user.avatar ??
+                                  "assets/images/profile_image.png",
                               icon: Icons.verified_outlined,
                             ),
                             16.verticalSpace,
@@ -67,7 +69,10 @@ class SettingsScreen extends StatelessWidget {
                               style: AppTextStyle.font30extraBold,
                             ),
                             Text(
-                              user.tierLevel.toString(),
+                              // 👈 الحل هنا: منع طباعة كلمة "null"
+                              user.tierLevel != null
+                                  ? "Tier ${user.tierLevel}"
+                                  : "Standard Member",
                               style: AppTextStyle.font16medium.copyWith(
                                 color: AppColor.lightgray,
                                 height: 19.6 / 16,
@@ -75,7 +80,7 @@ class SettingsScreen extends StatelessWidget {
                               ),
                             ),
                             32.verticalSpace,
-                            SettingsOptions(),
+                            const SettingsOptions(),
                             32.verticalSpace,
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -86,7 +91,7 @@ class SettingsScreen extends StatelessWidget {
                                   context.pushNamedAndRemoveUntil(Routes.logIn);
                                 },
                                 text: "Log Out",
-                                boxShadow: [],
+                                boxShadow: const [],
                                 textcolor: AppColor.lightRed,
                                 color: AppColor.lightRed,
                                 backGroundColor: AppColor.lightRed.withOpacity(

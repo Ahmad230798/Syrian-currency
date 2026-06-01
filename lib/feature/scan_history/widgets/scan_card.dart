@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
+import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/widgets/options_card.dart';
 import 'package:syrian_currency/feature/camera_scan/model/scanner_response_model.dart';
 
@@ -12,7 +14,6 @@ class ScanCard extends StatelessWidget {
 
   const ScanCard({super.key, required this.scanData});
 
-  // دالة بسيطة لتنسيق التاريخ والوقت
   String _formatDate(String isoDate) {
     DateTime date = DateTime.parse(isoDate).toLocal();
     String day = date.day.toString().padLeft(2, '0');
@@ -22,13 +23,13 @@ class ScanCard extends StatelessWidget {
     return "$day/$month/${date.year} • $hour:$minute";
   }
 
-  // دالة ذكية لمعالجة الرابط (تمنع تكرار http://)
   String _getImageUrl() {
-    String path = scanData.heatmap ?? scanData.image;
+    // 👈 التعديل هنا: استخدام الصورة الأصلية للمستخدم بدلاً من الـ heatmap
+    String path = scanData.image;
     if (path.startsWith("http")) {
-      return path; // الرابط كامل وجاهز
+      return path;
     }
-    return "http://192.168.1.14:8000$path"; // الرابط يحتاج إضافة الدومين
+    return "http://192.168.1.5:8000$path"; // 👈 تأكد أن الـ IP يطابق سيرفرك الحالي
   }
 
   @override
@@ -40,6 +41,16 @@ class ScanCard extends StatelessWidget {
     return Column(
       children: [
         OptionsCard(
+          // 👈 التعديل هنا: إضافة خاصية الانتقال عند الضغط
+          onTap: () {
+            context.pushNamed(
+              Routes.scanResult,
+              arguments: {
+                'scanData': scanData,
+                'isExpert': false, // مستخدم عادي
+              },
+            );
+          },
           widget: Container(
             width: 64.w,
             height: 64.h,
@@ -47,9 +58,7 @@ class ScanCard extends StatelessWidget {
               color: AppColor.mainContainerBackGround,
               shape: BoxShape.circle,
               image: DecorationImage(
-                image: NetworkImage(
-                  _getImageUrl(),
-                ), // استخدمنا الدالة الذكية هنا
+                image: NetworkImage(_getImageUrl()),
                 fit: BoxFit.cover,
               ),
             ),
