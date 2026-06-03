@@ -42,6 +42,7 @@ import 'package:syrian_currency/feature/scan_result/ui/scan_result_screen.dart';
 import 'package:syrian_currency/feature/settings_screen/logic/setting_cubit.dart';
 import 'package:syrian_currency/feature/settings_screen/repo/setting_repo.dart';
 import 'package:syrian_currency/feature/settings_screen/ui/settings_screen.dart';
+import 'package:syrian_currency/feature/splash_screen/splash_screen.dart';
 
 class AppRoute {
   Route generateRoute(RouteSettings settings) {
@@ -189,6 +190,8 @@ class AppRoute {
             child: const MainLayoutScreen(),
           ),
         );
+      case Routes.splashScreen:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       default:
         return MaterialPageRoute(
           builder: (_) =>

@@ -68,7 +68,8 @@ class LoginScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 32),
                                 BlocConsumer<LoginCubit, LoginState>(
-                                  listener: (context, state) {
+                                  listener: (context, state) async {
+                                    final pref = SharedPreferencesService();
                                     if (state is LoginSuccess) {
                                       SnackBarHelper.showSuccess(
                                         context,
@@ -76,10 +77,16 @@ class LoginScreen extends StatelessWidget {
                                       );
 
                                       if (state.role == 'admin') {
+                                        await pref.saveUserRole(
+                                          'admin',
+                                        ); // تعيين الصلاحية كزائر
                                         context.pushNamedAndRemoveUntil(
                                           Routes.adminDashboard,
                                         );
                                       } else {
+                                        await pref.saveUserRole(
+                                          'user',
+                                        ); // تعيين الصلاحية كزائر
                                         context.pushNamedAndRemoveUntil(
                                           Routes.mainLayout,
                                         );
@@ -134,7 +141,6 @@ class LoginScreen extends StatelessWidget {
                     TextButton(
                       onPressed: () async {
                         final pref = SharedPreferencesService();
-                        await pref.clearTokens(); // مسح أي بيانات سابقة
                         await pref.saveUserRole(
                           'guest',
                         ); // تعيين الصلاحية كزائر

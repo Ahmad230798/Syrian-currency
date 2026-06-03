@@ -2,13 +2,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesService {
   SharedPreferences? _pref;
+
   Future<SharedPreferences> get _prefs async {
     return _pref ??= await SharedPreferences.getInstance();
   }
 
+  // الثوابت (المفاتيح)
   static const String accessTokenKey = 'access_token';
   static const String refreshTokenKey = 'refresh_token';
+  static const String deviceIdKey = 'device_id';
+  static const String roleKey = 'user_role';
 
+  // =====================================
+  // 1. إدارة التوكنز
+  // =====================================
   Future<void> saveTokens({
     required String accessToken,
     required String refreshToken,
@@ -32,32 +39,33 @@ class SharedPreferencesService {
     final prefs = await _prefs;
     await prefs.remove(accessTokenKey);
     await prefs.remove(refreshTokenKey);
+    await prefs.remove(roleKey); // مسح الصلاحية عند تسجيل الخروج
   }
 
-  static const String deviceIdKey = 'device_id';
-
-  // توليد مُعرّف عشوائي للجهاز إذا لم يكن موجوداً
+  // =====================================
+  // 2. إدارة معرف الجهاز
+  // =====================================
   Future<String> getDeviceId() async {
     final prefs = await _prefs;
     String? deviceId = prefs.getString(deviceIdKey);
 
     if (deviceId == null) {
-      // توليد مُعرّف يعتمد على الوقت كحل بسيط وسريع
       deviceId = 'device_${DateTime.now().millisecondsSinceEpoch}';
       await prefs.setString(deviceIdKey, deviceId);
     }
     return deviceId;
   }
 
-  // حفظ صلاحية المستخدم
+  // =====================================
+  // 3. إدارة الصلاحيات
+  // =====================================
   Future<void> saveUserRole(String role) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user_role', role);
+    final prefs = await _prefs;
+    await prefs.setString(roleKey, role);
   }
 
-  // جلب صلاحية المستخدم
   Future<String> getUserRole() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('user_role') ?? 'user'; // الافتراضي user
+    final prefs = await _prefs;
+    return prefs.getString(roleKey) ?? 'user';
   }
 }

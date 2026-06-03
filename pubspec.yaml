@@ -50,6 +50,7 @@ dependencies:
   dartz: ^0.10.1
   permission_handler: ^12.0.1
   bloc: ^9.2.1
+  flutter_native_splash: ^2.4.7
 
 dev_dependencies:
   flutter_test:
@@ -115,3 +116,12 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_native_splash:
+  # لون الخلفية للشاشة (مثلاً لون الخلفية الكحلية لتطبيقك)
+
+  color: "#0F141E" # هذا اللون سيملأ الشاشة بأكملها
+  image: "assets/images/splash.png" # هنا تضع الصورة المفرغة (الشفافة)
+  
+  android_12:
+    color: "#0F141E" # تأكيد اللون لأندرويد 12
+    image: "assets/images/splash.png" # تأكيد الصورة الشفافة لأندرويد 12

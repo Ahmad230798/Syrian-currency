@@ -14,4 +14,5 @@ class Routes {
   static const String mainLayout = '/mainLayout';
   static const String adminDashboard = '/adminDashboard';
   static const String myReports = '/myReports';
+  static const String splashScreen = '/splashScreen';
 }
