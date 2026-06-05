@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/networking/servicse.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
 
 class OnBoardingHeader extends StatelessWidget {
@@ -27,7 +28,10 @@ class OnBoardingHeader extends StatelessWidget {
                 height: 24 / 16,
               ),
             ),
-            onTap: () => context.pushNamedAndRemoveUntil(Routes.logIn),
+            onTap: () {
+              SharedPreferencesService().setFirstTimeNotified();
+              context.pushNamedAndRemoveUntil(Routes.logIn);
+            },
           ),
         ],
       ),

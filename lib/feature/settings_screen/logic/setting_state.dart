@@ -14,6 +14,10 @@ class SettingInitState extends SettingState {
 class SettingLoadingState extends SettingState {
   const SettingLoadingState();
 }
+class LogoutLoading extends SettingState {
+  const LogoutLoading();
+}
+
 
 class SettingSuccessState extends SettingState {
   final UserModel user;
@@ -22,9 +26,20 @@ class SettingSuccessState extends SettingState {
   List<Object> get props => [user];
 }
 
+class LogoutSuccess extends SettingState {
+  const LogoutSuccess();
+}
+
 class SettingFailureState extends SettingState {
   final String errorMessage;
   const SettingFailureState(this.errorMessage);
+  @override
+  List<Object> get props => [errorMessage];
+}
+
+class LogoutFailure extends SettingState {
+  final String errorMessage;
+  const LogoutFailure(this.errorMessage);
   @override
   List<Object> get props => [errorMessage];
 }

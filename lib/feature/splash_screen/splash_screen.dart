@@ -25,39 +25,46 @@ class _SplashScreenState extends State<SplashScreen> {
     _checkUserRoleAndNavigate();
   }
 
-  // 🌟 2. الكود بعد استخدام await وإضافة فحص المرة الأولى
-  Future<void> _checkUserRoleAndNavigate() async {
+ Future<void> _checkUserRoleAndNavigate() async {
     await Future.delayed(const Duration(seconds: 3));
 
     final SharedPreferencesService prefService = SharedPreferencesService();
 
-    // جلب البيانات من الذاكرة المحلية
+    // 1. جلب حالة الزيارة الأولى والتوكن والصلاحية من الذاكرة
+    final bool isFirstTime = await prefService.isFirstTime(); 
     final String? accessToken = await prefService.getAccessToken();
+    final String role = await prefService.getUserRole();
 
     if (!mounted) return;
-    final String role = await prefService.getUserRole();
-    if (accessToken != null || role == "guest") {
-      // ✅ المستخدم لديه توكن (مسجل دخول أو زائر)
 
-      if (role == "user") {
-        await prefService.saveUserRole('user'); // تأكيد الصلاحية
-        // توجيه الأدمن
-        context.pushNamedAndRemoveUntil(Routes.mainLayout);
-      } else {
-        // توجيه المستخدم العادي والزائر (وأيضاً الخبير إذا وجد)
-        if (role == "guest") {
-          await prefService.saveUserRole('guest'); // تأكيد الصلاحية
-        }
-        context.pushNamedAndRemoveUntil(Routes.mainLayout);
-      }
-      if (role == "admin") {
-        context.pushNamedAndRemoveUntil(Routes.adminDashboard);
-      }
-    } else {
+    // 🌟 الجدار الأول: هل هذه أول مرة يفتح فيها التطبيق؟
+    if (isFirstTime) {
+      // ✅ نعم، أول مرة -> وجهه لشاشة الترحيب (Onboarding)
       context.pushNamedAndRemoveUntil(Routes.pageCntroller);
+      
+    } else {
+      // ❌ لا، ليست المرة الأولى -> افحص التوكن والصلاحية
+      
+      if (accessToken != null || role == "guest") {
+        // المستخدم لديه توكن أو مسجل كزائر
+        if (role == "admin") {
+          context.pushNamedAndRemoveUntil(Routes.adminDashboard);
+        } else if (role == "user") {
+          await prefService.saveUserRole('user');
+          context.pushNamedAndRemoveUntil(Routes.mainLayout);
+        } else {
+          // للزائر (Guest) أو الخبير (Expert)
+          if (role == "guest") {
+            await prefService.saveUserRole('guest');
+          }
+          context.pushNamedAndRemoveUntil(Routes.mainLayout);
+        }
+      } else {
+        // زار التطبيق سابقاً ولكنه لا يملك توكن (غير مسجل دخول) -> وجهه لتسجيل الدخول
+        context.pushNamedAndRemoveUntil(Routes.logIn);
+      }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -220,52 +220,58 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                 child: SizedBox(
                   height: 85.h,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            _buildNavItem(
-                              context,
-                              Icons.home_outlined,
-                              Icons.home,
-                              'Home',
-                              0,
-                              currentIndex,
-                              cubit,
+                            Expanded(
+                              child: _buildNavItem(
+                                context,
+                                Icons.home_outlined,
+                                Icons.home,
+                                'Home',
+                                0,
+                                currentIndex,
+                                cubit,
+                              ),
                             ),
-                            _buildNavItem(
-                              context,
-                              (_userRole == 'expert' || _userRole == 'admin')
-                                  ? Icons.dynamic_feed_outlined
-                                  : Icons.history_outlined,
-                              (_userRole == 'expert' || _userRole == 'admin')
-                                  ? Icons.dynamic_feed
-                                  : Icons.history,
-                              (_userRole == 'expert' || _userRole == 'admin')
-                                  ? 'Audit Feed'
-                                  : 'History',
-                              1,
-                              currentIndex,
-                              cubit,
+                            Expanded(
+                              child: _buildNavItem(
+                                context,
+                                (_userRole == 'expert' || _userRole == 'admin')
+                                    ? Icons.dynamic_feed_outlined
+                                    : Icons.history_outlined,
+                                (_userRole == 'expert' || _userRole == 'admin')
+                                    ? Icons.dynamic_feed
+                                    : Icons.history,
+                                (_userRole == 'expert' || _userRole == 'admin')
+                                    ? 'Audit Feed'
+                                    : 'History',
+                                1,
+                                currentIndex,
+                                cubit,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(width: 48.w),
+                      SizedBox(width: 30.w),
                       Expanded(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            _buildNavItem(
-                              context,
-                              Icons.person_outline,
-                              Icons.person,
-                              'Profile',
-                              2,
-                              currentIndex,
-                              cubit,
+                            Expanded(
+                              child: _buildNavItem(
+                                context,
+                                Icons.person_outline,
+                                Icons.person,
+                                'Profile',
+                                2,
+                                currentIndex,
+                                cubit,
+                              ),
                             ),
                             _buildNavItem(
                               context,
