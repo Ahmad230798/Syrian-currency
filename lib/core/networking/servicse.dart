@@ -12,6 +12,7 @@ class SharedPreferencesService {
   static const String refreshTokenKey = 'refresh_token';
   static const String deviceIdKey = 'device_id';
   static const String roleKey = 'user_role';
+  static const String isFirstTimeKey = 'is_first_time';
 
   // =====================================
   // 1. إدارة التوكنز
@@ -23,6 +24,17 @@ class SharedPreferencesService {
     final prefs = await _prefs;
     await prefs.setString(accessTokenKey, accessToken);
     await prefs.setString(refreshTokenKey, refreshToken);
+  }
+
+  Future<bool> isFirstTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    // القيمة الافتراضية true إذا لم يجد المفتاح
+    return prefs.getBool(isFirstTimeKey) ?? true;
+  }
+
+  Future<void> setFirstTimeNotified() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(isFirstTimeKey, false);
   }
 
   Future<String?> getAccessToken() async {

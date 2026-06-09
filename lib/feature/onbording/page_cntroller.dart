@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syrian_currency/core/constants/app_color.dart';
 import 'package:syrian_currency/core/constants/app_text_style.dart';
 import 'package:syrian_currency/core/helper/navigation.dart';
+import 'package:syrian_currency/core/networking/servicse.dart';
 import 'package:syrian_currency/core/routing/routes.dart';
 import 'package:syrian_currency/core/widgets/app_bottom.dart';
 import 'package:syrian_currency/feature/onbording/pages/on_boarding1.dart';
@@ -84,7 +85,8 @@ class _PageCntrollerState extends State<PageCntroller> {
               ),
               SizedBox(height: 24),
               InkWell(
-                onTap: () {
+                onTap: () async {
+                  await SharedPreferencesService().setFirstTimeNotified();
                   context.pushNamedAndRemoveUntil(Routes.logIn);
                 },
                 child: SizedBox(

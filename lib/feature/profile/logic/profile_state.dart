@@ -15,6 +15,10 @@ class ProfileLoading extends ProfileState {
   const ProfileLoading();
 }
 
+class LogoutLoading extends ProfileState {
+  const LogoutLoading();
+}
+
 class ProfileSuccess extends ProfileState {
   final UserModel user;
   const ProfileSuccess(this.user);
@@ -22,9 +26,20 @@ class ProfileSuccess extends ProfileState {
   List<Object?> get props => [user];
 }
 
+class LogoutSuccess extends ProfileState {
+  const LogoutSuccess();
+}
+
 class ProfileFailure extends ProfileState {
   final String errorMessage;
   const ProfileFailure(this.errorMessage);
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+class LogoutFailure extends ProfileState {
+  final String errorMessage;
+  const LogoutFailure(this.errorMessage);
   @override
   List<Object?> get props => [errorMessage];
 }

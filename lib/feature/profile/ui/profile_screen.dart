@@ -215,11 +215,11 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       icon: Icons.logout,
                                       onPressed: () {
-                                        final pref = SharedPreferencesService();
-                                        pref.clearTokens();
-                                        context.pushNamedAndRemoveUntil(
-                                          Routes.logIn,
-                                        );
+                                        // 🌟 استدعاء الدالة من الكيوبيت لتقوم بضرب الـ API ومسح الذاكرة والتوجيه
+                                        // ملاحظة: تأكد من اسم الدالة في الكيوبيت الخاص بك (مثلاً: logOut أو emitLogoutStates)
+                                        context
+                                            .read<ProfileCubit>()
+                                            .emitLogoutStates(context);
                                       },
                                     ),
                                   ],
