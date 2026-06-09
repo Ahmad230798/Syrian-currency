@@ -37,8 +37,8 @@ class TechStackGrid extends StatelessWidget {
             Expanded(
               child: _TechStackItem(
                 icon: Icons.psychology,
-                title: "CNN",
-                subtitle: "Classification",
+                title: "DeepCAE",
+                subtitle: "Anomaly Detection",
               ),
             ),
             12.horizontalSpace,

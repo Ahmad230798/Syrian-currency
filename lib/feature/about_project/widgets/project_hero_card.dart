@@ -16,7 +16,7 @@ class ProjectHeroCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(32.r),
         image: const DecorationImage(
-          image: AssetImage("assets/images/about_project.png"),
+          image: AssetImage("assets/images/syp.jpg"),
           fit: BoxFit.cover,
         ),
       ),
@@ -44,7 +44,7 @@ class ProjectHeroCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Text(
-                "RESEARCH 2024",
+                "RESEARCH 2026",
                 style: AppTextStyle.font12semibold.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w900,
@@ -58,7 +58,7 @@ class ProjectHeroCard extends StatelessWidget {
             ),
             4.verticalSpace,
             Text(
-              "Deep Learning for Medical Diagnostics",
+              "AI-Powered Counterfeit Banknote Detection",
               style: AppTextStyle.font14regular.copyWith(
                 color: Colors.white.withOpacity(0.7),
               ),

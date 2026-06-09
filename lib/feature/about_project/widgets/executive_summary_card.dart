@@ -31,7 +31,7 @@ class ExecutiveSummaryCard extends StatelessWidget {
           ),
           16.verticalSpace,
           Text(
-            "SYP Shield AI is an academic research initiative focused on enhancing diagnostic accuracy in clinical settings. By utilizing Convolutional Neural Networks (CNN), the system provides automated analysis of medical imaging with visual interpretability.",
+            "SYP Shield AI is an advanced cyber-security platform designed to detect counterfeit Syrian banknotes with high accuracy. By utilizing Deep Convolutional Autoencoders (DeepCAE) and anomaly detection techniques, the system provides automated security analysis of currency images, ensuring visual interpretability through Grad-CAM heatmaps.",
             style: AppTextStyle.font16medium.copyWith(
               color: AppColor.grayText,
               height: 1.6,
